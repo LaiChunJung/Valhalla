@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -37,8 +38,14 @@ public class Manager : MonoBehaviour
 		
 	}
 	
-	void FixedUpdate ()
+	void FixedUpdate()
+	{
+		
+	}
+
+	void LateUpdate()
 	{
 		Player.Instance.Move();
+		CameraCtrl.Instance.Caculate();
 	}
 }

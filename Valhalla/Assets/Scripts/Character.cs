@@ -5,15 +5,19 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
 	public float hp = 0.0f;
-	public float mp = 0.0f;
 	public bool movable = true;
 	public bool hitable = true;
 	[HideInInspector]
 	public Transform trans;
 	[HideInInspector]
 	public Animator anim;
-	[HideInInspector]
-	public AnimatorStateInfo currentState;
+	public AnimatorStateInfo currentState
+	{
+		get
+		{
+			return anim.GetCurrentAnimatorStateInfo(0);
+		}
+	}
 	[HideInInspector]
 	public CharacterController controller;
 
@@ -21,7 +25,6 @@ public class Character : MonoBehaviour
 	{
 		trans = this.transform;
 		anim = GetComponent<Animator> ();
-		currentState = anim.GetCurrentAnimatorStateInfo(0);
 		controller = GetComponent<CharacterController>();
 	}
 
