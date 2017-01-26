@@ -37,6 +37,11 @@ public class Manager : MonoBehaviour
 	{
 		
 	}
+
+	void Update()
+	{
+		Player.Instance.InputDetect();
+	}
 	
 	void FixedUpdate()
 	{
@@ -46,6 +51,7 @@ public class Manager : MonoBehaviour
 	void LateUpdate()
 	{
 		Player.Instance.Move();
+		Player.Instance.IKControl();
 		CameraCtrl.Instance.Caculate();
 	}
 }
