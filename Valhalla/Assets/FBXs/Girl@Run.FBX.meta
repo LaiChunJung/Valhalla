@@ -298,7 +298,7 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves:
-      - name: LeftFoot
+      - name: LeftFoot_
         curve:
           serializedVersion: 2
           curve:
@@ -341,7 +341,7 @@ ModelImporter:
           preInfinity: 3
           postInfinity: 3
           rotationOrder: 0
-      - name: RightFootX
+      - name: RightFoot_
         curve:
           serializedVersion: 2
           curve:

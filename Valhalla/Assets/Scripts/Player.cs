@@ -25,30 +25,29 @@ public class Player : Character
 	#endregion
 
 	#region ------ Public Varibles ------
-	public float		turnSpeed = 0.0f;
-	public float		jumpSpeed = 0.0f;
-	public float		jumpHeight = 0.0f;
-	public Collider[]	bones;
-	
-	public float		ikOffsetY;
+	[HideInInspector]
+	public CharacterController	controller;
+	public Rigidbody deadCameraConneted;
+	public float				ikOffsetY;
+	public Collider[]			bones;
 	#endregion
 
 	#region ------ Private Varibles ------
-	private Vector3		moveDir = Vector3.zero;
-	private Transform	cameraTrans;
-	private Vector3		lFootPos;
-	private Vector3		rFootPos;
-	private Quaternion	lFootRot;
-	private Quaternion	rFootRot;
-	private float		lFootWt;
-	private float		rFootWt;
-	private Transform	leftFoot;
-	private Transform	rightFoot;
+	private CharacterController LogController;
+	private Vector3				lFootPos;
+	private Vector3				rFootPos;
+	private Quaternion			lFootRot;
+	private Quaternion			rFootRot;
+	private float				lFootWt;
+	private float				rFootWt;
+	private Transform			leftFoot;
+	private Transform			rightFoot;
 	#endregion
 
 	#region ------ Animation States ------
 	private static int Jump;
 	private static int Dodge;
+	private static int Fall;
 	#endregion
 
 	protected override void Awake()
@@ -65,15 +64,13 @@ public class Player : Character
 	protected override void Start()
 	{
 		base.Start();
-
-		Jump = Animator.StringToHash("Base.Jump");
-		Dodge = Animator.StringToHash("Base.Dodge");
+		
+		controller = GetComponent<CharacterController>();
 
 		leftFoot = anim.GetBoneTransform(HumanBodyBones.LeftFoot);
 		rightFoot = anim.GetBoneTransform(HumanBodyBones.RightFoot);
 
-		cameraTrans = CameraCtrl.Instance.transform;
-
+		bones = GetComponentsInChildren<Collider>(true);
 		foreach (Collider bone in bones)
 		{
 			Physics.IgnoreCollision(controller, bone, true);
@@ -82,8 +79,8 @@ public class Player : Character
 
 	void OnAnimatorIK()
 	{
-		lFootWt = anim.GetFloat("LeftFoot") + anim.GetFloat("FootIK");
-		rFootWt = anim.GetFloat("RightFoot") + anim.GetFloat("FootIK");
+		lFootWt = anim.GetFloat("LeftFoot");
+		rFootWt = anim.GetFloat("RightFoot");
 
 		if(controller.isGrounded)
 		{
@@ -103,24 +100,26 @@ public class Player : Character
 	//------LateUpdate------
 	public void IKControl ()
 	{
+		if (!anim || !controller)
+			return;
+
 		RaycastHit lFootHit;
 		RaycastHit rFootHit;
 
-		Vector3 lPos = leftFoot.TransformPoint(Vector3.zero) + new Vector3 (0, 0.2f, 0);
-		Vector3 rPos = rightFoot.TransformPoint(Vector3.zero) + new Vector3(0, 0.2f, 0);
+		Vector3 lPos = leftFoot.position + new Vector3 (0, 0.2f, 0);
+		Vector3 rPos = rightFoot.position + new Vector3(0, 0.2f, 0);
 
 		if (Physics.Raycast(lPos, -Vector3.up, out lFootHit, 0.9f, ~LayerMask.GetMask("Player")))
 		{
 			lFootPos = lFootHit.point;
 			lFootRot = Quaternion.FromToRotation(trans.up, lFootHit.normal) * trans.rotation;
 			lFootRot = Quaternion.Euler(lFootRot.eulerAngles.x, lFootRot.eulerAngles.y, 0);
-
 			Vector3 curLPos = anim.GetBoneTransform(HumanBodyBones.LeftFoot).position;
 			float lDis = Vector3.Distance(curLPos, lFootPos);
 			if (lDis > 0.1f)
 			{
 				Vector3 correct = lFootPos - curLPos;
-				lFootPos = curLPos + correct * 0.65f;
+				lFootPos = curLPos + correct * 0.2f;
 			}
 			else
 				lFootPos = lFootPos + new Vector3(0, ikOffsetY, 0);
@@ -138,7 +137,7 @@ public class Player : Character
 			if (rDis > 0.1f)
 			{
 				Vector3 correct = rFootPos - curRPos;
-				rFootPos = curRPos + correct * 0.65f;
+				rFootPos = curRPos + correct * 0.2f;
 			}
 			else
 				rFootPos = rFootPos + new Vector3 (0, ikOffsetY, 0);
@@ -150,10 +149,12 @@ public class Player : Character
 	//------Update------
 	public void InputDetect()
 	{
+		if (!anim || !controller)
+			return;
+
 		if (Input.GetButtonDown("Valhalla Dodge"))
 		{
 			if (!anim.IsInTransition(0) &&
-				currentState.fullPathHash != Dodge &&
 				currentState.fullPathHash != Jump)
 			{
 				anim.SetTrigger("Dodge");
@@ -162,44 +163,31 @@ public class Player : Character
 		else if (Input.GetButtonDown("Valhalla Jump") && controller.isGrounded)
 		{
 			if (!anim.IsInTransition(0) &&
-				currentState.fullPathHash != Dodge &&
-				currentState.fullPathHash != Jump)
+				currentState.fullPathHash != Dodge)
 			{
 				anim.SetTrigger("Jump");
 			}
 		}
 	}
 
-	//------LateUpdate------
-	public override void Move()
+	public void SetFalling()
 	{
-		float h = 0.0f;
-		float v = 0.0f;
+		if (!anim || !controller)
+			return;
 
-		if (movable && currentState.tagHash != Dodge)
-		{
-			h = Input.GetAxis("Valhalla Horizontal");
-			v = Input.GetAxis("Valhalla Vertical");
-			anim.SetFloat("Run", Math.Abs(h) + Math.Abs(v));
-		}
+		//anim.SetBool("Ground", controller.isGrounded);
+	}
 
-		moveDir = new Vector3(h, 0, v);
+	public void SetPlayerOutOfCtrl()
+	{
+		//trans.position += new Vector3(0, 0.15f, 0);
+		//Destroy(controller);
 
-		if (currentState.fullPathHash == Jump)
-		{
-			moveDir = cameraTrans.TransformDirection(moveDir.normalized) * jumpSpeed;
-			controller.Move(moveDir * Time.fixedDeltaTime);
-		}
-		else
-		{
-			moveDir = cameraTrans.TransformDirection(moveDir.normalized);
-		}
-
-		if(moveDir != Vector3.zero)
-		{
-			Vector3 targetDir = new Vector3(moveDir.x, 0, moveDir.z);
-			trans.forward = Vector3.Lerp(trans.forward, targetDir, turnSpeed * Time.fixedDeltaTime);
-		}
+		//controller.enabled = false;
+		anim.enabled = false;
+		movable = false;
+		hitable = false;
+		gameObject.AddComponent<FixedJoint>().connectedBody = deadCameraConneted;
 	}
 
 	void AnimStart(string msg)

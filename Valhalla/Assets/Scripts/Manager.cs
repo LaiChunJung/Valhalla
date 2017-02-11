@@ -35,12 +35,18 @@ public class Manager : MonoBehaviour
 
 	void Start ()
 	{
-		
+		Player.Instance.SetFalling();
 	}
 
 	void Update()
 	{
 		Player.Instance.InputDetect();
+		FpsDisplay.Instance.Launch();
+
+		if (Input.GetKeyDown(KeyCode.Delete))
+		{
+			Player.Instance.SetPlayerOutOfCtrl();
+		}
 	}
 	
 	void FixedUpdate()
@@ -50,7 +56,8 @@ public class Manager : MonoBehaviour
 
 	void LateUpdate()
 	{
-		Player.Instance.Move();
+		PlayerMovement.Instance.Move();
+		Player.Instance.SetFalling();
 		Player.Instance.IKControl();
 		CameraCtrl.Instance.Caculate();
 	}

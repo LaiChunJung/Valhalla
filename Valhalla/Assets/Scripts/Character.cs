@@ -18,14 +18,11 @@ public class Character : MonoBehaviour
 			return anim.GetCurrentAnimatorStateInfo(0);
 		}
 	}
-	[HideInInspector]
-	public CharacterController controller;
 
 	protected virtual void Awake()
 	{
 		trans = this.transform;
 		anim = GetComponent<Animator> ();
-		controller = GetComponent<CharacterController>();
 	}
 
 	protected virtual void Start()
