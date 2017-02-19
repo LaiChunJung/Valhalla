@@ -124,7 +124,7 @@ public class Player : Character
 			else
 				lFootPos = lFootPos + new Vector3(0, ikOffsetY, 0);
 
-			Debug.Log("Left Foot Pos : " + lFootPos.ToString () + "   " + "Left Foot Rot : " + lFootRot.eulerAngles.ToString ());
+			//Debug.Log("Left Foot Pos : " + lFootPos.ToString () + "   " + "Left Foot Rot : " + lFootRot.eulerAngles.ToString ());
 		}
 
 		if (Physics.Raycast(rPos, -Vector3.up, out rFootHit, 0.9f, ~LayerMask.GetMask("Player")))
@@ -142,7 +142,7 @@ public class Player : Character
 			else
 				rFootPos = rFootPos + new Vector3 (0, ikOffsetY, 0);
 
-			Debug.Log("Right Foot Pos : " + rFootPos.ToString () + "   " + "Right Foot Rot : " + rFootRot.eulerAngles.ToString());
+			//Debug.Log("Right Foot Pos : " + rFootPos.ToString () + "   " + "Right Foot Rot : " + rFootRot.eulerAngles.ToString());
 		}
 	}
 

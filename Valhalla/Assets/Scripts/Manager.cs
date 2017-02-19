@@ -24,6 +24,8 @@ public class Manager : MonoBehaviour
 		}
 	}
 
+    public bool PlayerJoin = false;
+
 	void Awake()
 	{
 		if (Instance != this)
@@ -35,18 +37,21 @@ public class Manager : MonoBehaviour
 
 	void Start ()
 	{
-		Player.Instance.SetFalling();
+		//Player.Instance.SetFalling();
 	}
 
 	void Update()
 	{
-		Player.Instance.InputDetect();
-		FpsDisplay.Instance.Launch();
+        if(PlayerJoin)
+        {
+            Player.Instance.InputDetect();
+            FpsDisplay.Instance.Launch();
 
-		if (Input.GetKeyDown(KeyCode.Delete))
-		{
-			Player.Instance.SetPlayerOutOfCtrl();
-		}
+            if (Input.GetKeyDown(KeyCode.Delete))
+            {
+                Player.Instance.SetPlayerOutOfCtrl();
+            }
+        }
 	}
 	
 	void FixedUpdate()
@@ -56,9 +61,12 @@ public class Manager : MonoBehaviour
 
 	void LateUpdate()
 	{
-		PlayerMovement.Instance.Move();
-		Player.Instance.SetFalling();
-		Player.Instance.IKControl();
-		CameraCtrl.Instance.Caculate();
+        if (PlayerJoin)
+        {
+            PlayerMovement.Instance.Move();
+            Player.Instance.SetFalling();
+            Player.Instance.IKControl();
+            CameraCtrl.Instance.Caculate();
+        }
 	}
 }

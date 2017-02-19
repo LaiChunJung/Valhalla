@@ -67,6 +67,8 @@ public class CameraCtrl : MonoBehaviour
 
 		trans = transform;
 
+        //target = transform.parent.transform;
+
 		if (!target)
 			Debug.LogWarning("Target is not accessed.");
 	}
