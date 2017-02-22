@@ -9,6 +9,7 @@ public class FakeServer : Photon.MonoBehaviour {
     public string playerName = "Player01";
     public Transform spawnPoint;
     public GameObject playerPref;
+    public GameObject player2;
     public bool isConnected = false;
 
     void Start()
@@ -35,13 +36,21 @@ public class FakeServer : Photon.MonoBehaviour {
 
     public void spawnPlayer()
     {
-        GameObject pl = PhotonNetwork.Instantiate(playerPref.name, spawnPoint.position, spawnPoint.rotation, 0) as GameObject;
-        //Debug.Log("(‧‧)nnn~ (‧‧)nnn~ (‧‧)nnn~");
-        Manager.Instance.PlayerJoin = true;
-        CameraCtrl.Instance.target = pl.transform;
-        Player.Instance.SetFalling();
-        //pl.GetComponent<RigidbodyPlayer>().enabled = true;
-        //pl.GetComponent<RigidbodyPlayer>().fpsCam.SetActive(true);
+        //Debug.Log("<(￣︶￣)/ " + PhotonNetwork.playerList.Length);
+        if (PhotonNetwork.playerList.Length <= 1)
+        {
+            GameObject pl = PhotonNetwork.Instantiate(playerPref.name, spawnPoint.position, spawnPoint.rotation, 0) as GameObject;
+            //Debug.Log("(‧‧)nnn~ (‧‧)nnn~ (‧‧)nnn~");
+            Manager.Instance.PlayerJoin = true;
+            CameraCtrl.Instance.target = pl.transform;
+            Player.Instance.SetFalling();
+            //pl.GetComponent<RigidbodyPlayer>().enabled = true;
+            //pl.GetComponent<RigidbodyPlayer>().fpsCam.SetActive(true);
+        }
+        else
+        {
+            GameObject p2 = PhotonNetwork.Instantiate(player2.name, spawnPoint.position, spawnPoint.rotation, 0) as GameObject;
+        }
     }
 
     void OnGUI()
@@ -56,11 +65,9 @@ public class FakeServer : Photon.MonoBehaviour {
             {
                 PhotonNetwork.JoinOrCreateRoom(roomName, null, null);
             }
-            Debug.Log("（°ο°）~ @　" + PhotonNetwork.GetRoomList());
 
             foreach (RoomInfo game in PhotonNetwork.GetRoomList())
             {
-                Debug.Log("（°ο°）~ @　");
                 if (GUILayout.Button(game.Name + " " + game.PlayerCount + "/" + game.MaxPlayers))
                 {
                     PhotonNetwork.JoinOrCreateRoom(game.Name, null, null);

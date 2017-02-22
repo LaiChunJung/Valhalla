@@ -6,6 +6,7 @@ using UnityEngine;
 public class Player : Character
 {
 	#region ------ Singleton ------
+
 	private static Player _instance = null;
 	public static Player Instance
 	{
