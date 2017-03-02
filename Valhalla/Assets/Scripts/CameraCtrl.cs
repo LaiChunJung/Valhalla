@@ -65,17 +65,18 @@ public class CameraCtrl : MonoBehaviour
 			return;
 		}
 
-		trans = transform;
-
-        //target = transform.parent.transform;
-
-		if (!target)
-			Debug.LogWarning("Target is not accessed.");
+		Manager.Instance.LateUpdateDel += Caculate;
 	}
 
 	void Start()
 	{
-		Cursor.lockState = CursorLockMode.Locked;
+		//Cursor.lockState = CursorLockMode.Locked;
+
+		trans = transform;
+
+		if (!target)
+			Debug.LogWarning("Target is not accessed.");
+
 		Vector3 angles = trans.eulerAngles;
 		x = angles.y;
 		y = angles.x;

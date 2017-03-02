@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [AddComponentMenu("Utilities/HUDFPS")]
 public class FpsDisplay : MonoBehaviour
 {
-	private static FpsDisplay _instance = null;
+	/*private static FpsDisplay _instance = null;
 	public static FpsDisplay Instance
 	{
 		get
@@ -22,7 +22,7 @@ public class FpsDisplay : MonoBehaviour
 
 			return _instance;
 		}
-	}
+	}*/
 	
 	public float frequency = 0.5F;
 
@@ -33,11 +33,11 @@ public class FpsDisplay : MonoBehaviour
 
 	void Awake()
 	{
-		if (Instance != this)
+		/*if (Instance != this)
 		{
 			Destroy(gameObject);
 			return;
-		}
+		}*/
 	}
 
 	void Start()

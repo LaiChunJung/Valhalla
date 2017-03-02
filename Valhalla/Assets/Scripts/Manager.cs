@@ -24,7 +24,12 @@ public class Manager : MonoBehaviour
 		}
 	}
 
-    public bool PlayerJoin = false;
+	//public List<GameObject> players;
+	public delegate void Action();
+	public Action UpdateDel;
+	public Action LateUpdateDel;
+
+	public bool PlayerJoin = false;
 
 	void Awake()
 	{
@@ -44,14 +49,17 @@ public class Manager : MonoBehaviour
 	{
         if(PlayerJoin)
         {
-            Player.Instance.InputDetect();
-            FpsDisplay.Instance.Launch();
+            //Player.Instance.InputDetect();
+            //FpsDisplay.Instance.Launch();
 
             if (Input.GetKeyDown(KeyCode.Delete))
             {
-                Player.Instance.SetPlayerOutOfCtrl();
+                //Player.Instance.SetPlayerOutOfCtrl();
             }
         }
+
+		if(UpdateDel != null)
+			UpdateDel();
 	}
 	
 	void FixedUpdate()
@@ -63,10 +71,12 @@ public class Manager : MonoBehaviour
 	{
         if (PlayerJoin)
         {
-            PlayerMovement.Instance.Move();
-            Player.Instance.SetFalling();
-            Player.Instance.IKControl();
-            CameraCtrl.Instance.Caculate();
+            //PlayerMovement.Instance.Move();
+            //Player.Instance.SetFalling();
+            //Player.Instance.IKControl();
+            //CameraCtrl.Instance.Caculate();
         }
+		if(LateUpdateDel != null)
+			LateUpdateDel();
 	}
 }

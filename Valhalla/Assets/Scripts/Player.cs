@@ -6,23 +6,6 @@ using UnityEngine;
 public class Player : Character
 {
 	#region ------ Singleton ------
-
-	private static Player _instance = null;
-	public static Player Instance
-	{
-		get
-		{
-			if (_instance == null)
-			{
-				_instance = FindObjectOfType<Player>();
-				if (_instance == null)
-				{
-					Debug.LogWarning("Player is not exist.");
-				}
-			}
-			return _instance;
-		}
-	}
 	#endregion
 
 	#region ------ Public Varibles ------
@@ -51,21 +34,27 @@ public class Player : Character
 	private static int Fall;
 	#endregion
 
+	private Vector3 moveDir = Vector3.zero;
+	private Transform cameraTrans;
+	public float turnSpeed = 0.0f;
+	public float jumpSpeed = 0.0f;
+	public float jumpHeight = 0.0f;
+	public float fallMoveSpeed = 0.0f;
+
 	protected override void Awake()
 	{
 		base.Awake();
 
-		if (Instance != this)
-		{
-			Destroy(gameObject);
-			return;
-		}
+		Manager.Instance.UpdateDel += InputDetect;
+		Manager.Instance.LateUpdateDel += Move;
+		Manager.Instance.LateUpdateDel += IKControl;
+		cameraTrans = CameraCtrl.Instance.transform;
 	}
 
 	protected override void Start()
 	{
 		base.Start();
-		
+
 		controller = GetComponent<CharacterController>();
 
 		leftFoot = anim.GetBoneTransform(HumanBodyBones.LeftFoot);
@@ -76,6 +65,10 @@ public class Player : Character
 		{
 			Physics.IgnoreCollision(controller, bone, true);
 		}
+
+		Jump = Animator.StringToHash("Base.Jump");
+		Dodge = Animator.StringToHash("Base.Dodge");
+		Fall = Animator.StringToHash("Base.Fall");
 	}
 
 	void OnAnimatorIK()
@@ -168,6 +161,46 @@ public class Player : Character
 			{
 				anim.SetTrigger("Jump");
 			}
+		}
+	}
+
+	public override void Move()
+	{
+		if (!anim || !controller)
+			return;
+
+		float h = 0.0f;
+		float v = 0.0f;
+
+		if (movable && currentState.tagHash != Dodge)
+		{
+			h = Input.GetAxis("Valhalla Horizontal");
+			v = Input.GetAxis("Valhalla Vertical");
+			anim.SetFloat("Run", Math.Abs(h) + Math.Abs(v));
+		}
+
+		moveDir = new Vector3(h, 0, v);
+
+		if (currentState.fullPathHash == Jump)
+		{
+			moveDir = cameraTrans.TransformDirection(moveDir.normalized) * jumpSpeed;
+			controller.Move(moveDir * Time.fixedDeltaTime);
+		}
+		else if (currentState.fullPathHash == Fall && !anim.IsInTransition(0))
+		{
+			moveDir = cameraTrans.TransformDirection(moveDir.normalized) * fallMoveSpeed;
+			controller.Move(moveDir * Time.fixedDeltaTime);
+		}
+		else
+		{
+			moveDir = cameraTrans.TransformDirection(moveDir.normalized);
+		}
+
+		if (moveDir != Vector3.zero)
+		{
+			Vector3 targetDir = new Vector3(moveDir.x, 0, moveDir.z);
+			trans.forward =
+				Vector3.Lerp(trans.forward, targetDir, turnSpeed * Time.fixedDeltaTime);
 		}
 	}
 
