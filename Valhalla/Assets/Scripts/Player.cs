@@ -5,15 +5,10 @@ using UnityEngine;
 
 public class Player : Character
 {
-	#region ------ Singleton ------
-	#endregion
-
 	#region ------ Public Varibles ------
-	[HideInInspector]
-	public CharacterController	controller;
-	public Rigidbody deadCameraConneted;
+	public Rigidbody			deadCameraConneted;
 	public float				ikOffsetY;
-	public Collider[]			bones;
+	public float				fallingMovSpd = 0.0f;
 	#endregion
 
 	#region ------ Private Varibles ------
@@ -26,6 +21,7 @@ public class Player : Character
 	private float				rFootWt;
 	private Transform			leftFoot;
 	private Transform			rightFoot;
+	private Transform			cameraTrans;
 	#endregion
 
 	#region ------ Animation States ------
@@ -34,28 +30,24 @@ public class Player : Character
 	private static int Fall;
 	#endregion
 
-	private Vector3 moveDir = Vector3.zero;
-	private Transform cameraTrans;
-	public float turnSpeed = 0.0f;
-	public float jumpSpeed = 0.0f;
-	public float jumpHeight = 0.0f;
-	public float fallMoveSpeed = 0.0f;
 
 	protected override void Awake()
 	{
 		base.Awake();
 
-		Manager.Instance.UpdateDel += InputDetect;
-		Manager.Instance.LateUpdateDel += Move;
-		Manager.Instance.LateUpdateDel += IKControl;
 		cameraTrans = CameraCtrl.Instance.transform;
+
+		Manager.Instance.UpdateDel += InputDetect;
+		Manager.Instance.UpdateDel += Movement;
+		Manager.Instance.LateUpdateDel += IKControl;
 	}
+
 
 	protected override void Start()
 	{
 		base.Start();
 
-		controller = GetComponent<CharacterController>();
+		
 
 		leftFoot = anim.GetBoneTransform(HumanBodyBones.LeftFoot);
 		rightFoot = anim.GetBoneTransform(HumanBodyBones.RightFoot);
@@ -70,6 +62,7 @@ public class Player : Character
 		Dodge = Animator.StringToHash("Base.Dodge");
 		Fall = Animator.StringToHash("Base.Fall");
 	}
+
 
 	void OnAnimatorIK()
 	{
@@ -91,7 +84,8 @@ public class Player : Character
 		anim.SetIKRotationWeight(AvatarIKGoal.RightFoot, rFootWt);
 	}
 
-	//------LateUpdate------
+
+	// ------ LateUpdate ------
 	public void IKControl ()
 	{
 		if (!anim || !controller)
@@ -100,8 +94,8 @@ public class Player : Character
 		RaycastHit lFootHit;
 		RaycastHit rFootHit;
 
-		Vector3 lPos = leftFoot.position + new Vector3 (0, 0.2f, 0);
-		Vector3 rPos = rightFoot.position + new Vector3(0, 0.2f, 0);
+		Vector3 lPos = leftFoot.position + new Vector3 (0, 0.1f, 0);
+		Vector3 rPos = rightFoot.position + new Vector3(0, 0.1f, 0);
 
 		if (Physics.Raycast(lPos, -Vector3.up, out lFootHit, 0.9f, ~LayerMask.GetMask("Player")))
 		{
@@ -140,13 +134,29 @@ public class Player : Character
 		}
 	}
 
-	//------Update------
+
+	// ------ Update ------
 	public void InputDetect()
 	{
 		if (!anim || !controller)
 			return;
 
-		if (Input.GetButtonDown("Valhalla Dodge"))
+		if (movable)
+		{
+			if (currentState.fullPathHash != Dodge)
+			{
+				horizontal = Input.GetAxis("Valhalla Horizontal");
+				vertical = Input.GetAxis("Valhalla Vertical");
+
+				anim.SetFloat("Run", Math.Abs(horizontal) + Math.Abs(vertical));
+			}
+
+			moveDir = new Vector3(horizontal, 0, vertical);
+			moveDir = cameraTrans.TransformDirection(moveDir);
+		}
+
+		if (Input.GetButtonDown("Valhalla Dodge") &&
+			controller.isGrounded)
 		{
 			if (!anim.IsInTransition(0) &&
 				currentState.fullPathHash != Jump)
@@ -154,70 +164,56 @@ public class Player : Character
 				anim.SetTrigger("Dodge");
 			}
 		}
-		else if (Input.GetButtonDown("Valhalla Jump") && controller.isGrounded)
+		else if (Input.GetButtonDown("Valhalla Jump"))
 		{
 			if (!anim.IsInTransition(0) &&
-				currentState.fullPathHash != Dodge)
+				currentState.fullPathHash != Dodge && 
+				controller.isGrounded)
 			{
 				anim.SetTrigger("Jump");
+				moveDir.y = 1000.0f;
 			}
 		}
 	}
 
-	public override void Move()
+
+	// ------ Update ------
+	protected override void Movement()
 	{
-		if (!anim || !controller)
-			return;
-
-		float h = 0.0f;
-		float v = 0.0f;
-
-		if (movable && currentState.tagHash != Dodge)
+		if (currentState.fullPathHash == Fall)
 		{
-			h = Input.GetAxis("Valhalla Horizontal");
-			v = Input.GetAxis("Valhalla Vertical");
-			anim.SetFloat("Run", Math.Abs(h) + Math.Abs(v));
-		}
-
-		moveDir = new Vector3(h, 0, v);
-
-		if (currentState.fullPathHash == Jump)
-		{
-			moveDir = cameraTrans.TransformDirection(moveDir.normalized) * jumpSpeed;
-			controller.Move(moveDir * Time.fixedDeltaTime);
-		}
-		else if (currentState.fullPathHash == Fall && !anim.IsInTransition(0))
-		{
-			moveDir = cameraTrans.TransformDirection(moveDir.normalized) * fallMoveSpeed;
-			controller.Move(moveDir * Time.fixedDeltaTime);
-		}
-		else
-		{
-			moveDir = cameraTrans.TransformDirection(moveDir.normalized);
+			controller.Move(moveDir.normalized * fallingMovSpd * Time.fixedDeltaTime);
 		}
 
 		if (moveDir != Vector3.zero)
 		{
-			Vector3 targetDir = new Vector3(moveDir.x, 0, moveDir.z);
 			trans.forward =
-				Vector3.Lerp(trans.forward, targetDir, turnSpeed * Time.fixedDeltaTime);
+				Vector3.Lerp(trans.forward, new Vector3(moveDir.x, 0, moveDir.z), rotSpeed * Time.fixedDeltaTime);
 		}
+
+		// --- Falling Begin ---
+		if (currentState.fullPathHash != Jump &&
+			currentState.fullPathHash != Dodge &&
+			!controller.isGrounded)
+		{
+			RaycastHit hit;
+			if (Physics.SphereCast(trans.position + new Vector3(0.0f, 0.3f, 0.0f),
+				controller.radius,
+				Vector3.down, out hit, float.MaxValue,
+				~LayerMask.GetMask("Player")))
+			{
+				Debug.Log(hit.distance.ToString());
+				if (hit.distance > 1.0f)
+					anim.SetBool("Fall", true);
+				else
+					anim.SetBool("Fall", false);
+			}
+		}
+		// --- Falling End ---
 	}
 
-	public void SetFalling()
+	public void SetPlayerDead()
 	{
-		if (!anim || !controller)
-			return;
-
-		//anim.SetBool("Ground", controller.isGrounded);
-	}
-
-	public void SetPlayerOutOfCtrl()
-	{
-		//trans.position += new Vector3(0, 0.15f, 0);
-		//Destroy(controller);
-
-		//controller.enabled = false;
 		anim.enabled = false;
 		movable = false;
 		hitable = false;

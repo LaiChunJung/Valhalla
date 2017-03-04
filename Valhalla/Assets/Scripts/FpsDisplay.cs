@@ -6,43 +6,19 @@ using UnityEngine.UI;
 [AddComponentMenu("Utilities/HUDFPS")]
 public class FpsDisplay : MonoBehaviour
 {
-	/*private static FpsDisplay _instance = null;
-	public static FpsDisplay Instance
-	{
-		get
-		{
-			if (_instance == null)
-			{
-				_instance = FindObjectOfType<FpsDisplay>();
-				if (_instance == null)
-				{
-					Debug.LogWarning("Fps-UiText is not exist.");
-				}
-			}
+	public float	frequency = 0.5F;
 
-			return _instance;
-		}
-	}*/
-	
-	public float frequency = 0.5F;
-
-	private Text text;
-	private float accum = 0f;
-	private int frames = 0;
-	private Color color = Color.green;
-
-	void Awake()
-	{
-		/*if (Instance != this)
-		{
-			Destroy(gameObject);
-			return;
-		}*/
-	}
+	private Text	text;
+	private Color	color = Color.green;
+	private float	accum = 0f;
+	private int		frames = 0;
 
 	void Start()
 	{
 		text = GetComponent<Text>();
+
+		Manager.Instance.UpdateDel += Launch;
+
 		StartCoroutine(FPS());
 	}
 

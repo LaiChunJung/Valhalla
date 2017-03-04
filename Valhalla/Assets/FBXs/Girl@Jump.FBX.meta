@@ -279,7 +279,7 @@ ModelImporter:
       name: Jump
       takeName: Take 001
       firstFrame: 0
-      lastFrame: 24
+      lastFrame: 19
       wrapMode: 0
       orientationOffsetY: 0
       level: -0.1
@@ -316,7 +316,7 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 18.9
     isReadable: 1
   meshes:
     lODScreenPercentages: []

@@ -50,10 +50,10 @@ public class FakeServer : Photon.MonoBehaviour
 
 			//Manager.Instance.players.Add(pl);
 		}
-		else
+		/*else
 		{
 			GameObject p2 = PhotonNetwork.Instantiate(player2.name, spawnPoint.position, spawnPoint.rotation, 0) as GameObject;
-		}
+		}*/
 	}
 
 	void OnGUI()
