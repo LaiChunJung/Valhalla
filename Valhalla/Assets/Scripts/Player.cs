@@ -181,6 +181,9 @@ public class Player : Character
 	// ------ Update ------
 	protected override void Movement()
 	{
+		if (!enabled)
+			return;
+
 		if (currentState.fullPathHash == Fall)
 		{
 			controller.Move(moveDir.normalized * fallingMovSpd * Time.fixedDeltaTime);
