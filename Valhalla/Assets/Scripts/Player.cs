@@ -148,8 +148,9 @@ public class Player : Character
 				horizontal = Input.GetAxis("Valhalla Horizontal");
 				vertical = Input.GetAxis("Valhalla Vertical");
 
-				anim.SetFloat("Run", Math.Abs(horizontal) + Math.Abs(vertical));
-			}
+				//anim.SetFloat("Run", Math.Abs(horizontal) + Math.Abs(vertical));
+                PunSetAni("Run", Math.Abs(horizontal) + Math.Abs(vertical));
+            }
 
 			moveDir = new Vector3(horizontal, 0, vertical);
 			moveDir = cameraTrans.TransformDirection(moveDir);

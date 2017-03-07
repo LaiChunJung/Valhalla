@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FakeServer : Photon.MonoBehaviour
+public class GameLobby : Photon.MonoBehaviour
 {
 
 	public string verNum = "0.2";
@@ -21,6 +21,14 @@ public class FakeServer : Photon.MonoBehaviour
 		Debug.Log("Starting Connection!");
 	}
 
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            spawnPlayer();
+        }
+    }
+
 	public void OnJoinedLobby()
 	{
 		//PhotonNetwork.JoinOrCreateRoom(roomName, null, null); //joinroom people condition limit
@@ -37,24 +45,13 @@ public class FakeServer : Photon.MonoBehaviour
 
 	public void spawnPlayer()
 	{
-		//Debug.Log("<(￣︶￣)/ " + PhotonNetwork.playerList.Length);
-		if (PhotonNetwork.playerList.Length <= 1)
-		{
-			GameObject pl = PhotonNetwork.Instantiate(playerPref.name, spawnPoint.position, spawnPoint.rotation, 0) as GameObject;
-			//Debug.Log("(‧‧)nnn~ (‧‧)nnn~ (‧‧)nnn~");
-			Manager.Instance.PlayerJoin = true;
-			CameraCtrl.Instance.target = pl.transform;
-			//Player.SetFalling();
-			//pl.GetComponent<RigidbodyPlayer>().enabled = true;
-			//pl.GetComponent<RigidbodyPlayer>().fpsCam.SetActive(true);
-
-			//Manager.Instance.players.Add(pl);
-		}
-		/*else
-		{
-			GameObject p2 = PhotonNetwork.Instantiate(player2.name, spawnPoint.position, spawnPoint.rotation, 0) as GameObject;
-		}*/
-	}
+        //Debug.Log("<(￣︶￣)/ " + PhotonNetwork.playerList.Length);
+        GameObject pl = PhotonNetwork.Instantiate(playerPref.name, spawnPoint.position, spawnPoint.rotation, 0) as GameObject;
+        pl.GetComponent<Player>().enabled = true;
+        //Debug.Log("(‧‧)nnn~ (‧‧)nnn~ (‧‧)nnn~");
+        Manager.Instance.PlayerJoin = true;
+        CameraCtrl.Instance.target = pl.transform;
+    }
 
 	void OnGUI()
 	{

@@ -48,4 +48,10 @@ public class Character : MonoBehaviour
 	{
 		//How to move...
 	}
+
+    [PunRPC]
+    public void PunSetAni(string AniName, float Distance)
+    {
+        anim.SetFloat("Run", Distance);
+    }
 }
