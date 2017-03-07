@@ -12,6 +12,8 @@ public class Character : MonoBehaviour
 	public Transform			trans;
 	[HideInInspector]
 	public Animator				anim;
+    [HideInInspector]
+    public PhotonView           phview;
 	public AnimatorStateInfo	currentState
 	{
 		get
@@ -37,6 +39,7 @@ public class Character : MonoBehaviour
 	{
 		trans = this.transform;
 		anim = GetComponent<Animator> ();
+        phview = GetComponent<PhotonView>();
 	}
 
 	protected virtual void Start()
