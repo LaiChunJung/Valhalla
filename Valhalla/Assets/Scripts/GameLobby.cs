@@ -4,50 +4,83 @@ using UnityEngine;
 
 public class GameLobby : Photon.MonoBehaviour
 {
+    public GameRoom MGameRoom = null;
 
 	public string verNum = "0.2";
-	public string roomName = "room01";
-	public string playerName = "Player01";
-	public Transform spawnPoint;
+    public bool MisConnected = false;
+    public bool MisInRoom = false;
+    public static bool MisJoin = false;
+    /*
+    public Transform spawnPoint;
 	public GameObject playerPref;
 	public GameObject player2;
-	public bool isConnected = false;
+    */
 
 	void Start()
 	{
-		roomName = "Room" + Random.Range(0, 999);
-		playerName = "Player" + Random.Range(0, 999);
-		PhotonNetwork.ConnectUsingSettings(verNum);
+        MisConnected = false;
+        MisInRoom = false;
+        MisJoin = false;
+
+        PhotonNetwork.ConnectUsingSettings(verNum);
 		Debug.Log("Starting Connection!");
 	}
 
     void Update()
     {
+        /*
         if(Input.GetKeyDown(KeyCode.E))
         {
             spawnPlayer();
-        }
+        }*/
     }
 
 	public void OnJoinedLobby()
 	{
-		//PhotonNetwork.JoinOrCreateRoom(roomName, null, null); //joinroom people condition limit
-		isConnected = true;
-		Debug.Log("Starting Server!");
-	}
+        //PhotonNetwork.JoinOrCreateRoom(roomName, null, null); //joinroom people condition limit
+        MisConnected = true;
+        MisJoin = true;
+        Debug.Log("Starting Server!");
 
+    }
+    
 	public void OnJoinedRoom()
 	{
-		PhotonNetwork.playerName = playerName;
-		isConnected = false;
-		spawnPlayer();
-	}
+        MGameRoom.LobbyRoomName.text = PhotonNetwork.room.Name;
 
+        int ATeamNum = 0;
+        int BTeamNum = 0;
+
+        PhotonNetwork.playerName = MGameRoom.IN_PlayerName.text;
+        MisConnected = false;
+        MisInRoom = true;
+
+        foreach(PhotonPlayer player in PhotonNetwork.playerList)
+        {
+            if (player.GetTeam() == PunTeams.Team.red) { ATeamNum += 1; }
+            else if (player.GetTeam() == PunTeams.Team.blue) { BTeamNum += 1; }
+        }
+        if (ATeamNum >= BTeamNum) { PhotonNetwork.player.SetTeam(PunTeams.Team.blue); }
+        else if (ATeamNum < BTeamNum) { PhotonNetwork.player.SetTeam(PunTeams.Team.red); }
+
+        if (!PhotonNetwork.player.IsMasterClient)
+        {
+            MGameRoom.BtnReady.SetActive(PhotonNetwork.player.IsLocal);
+        }
+        else
+            MGameRoom.BtnStart.SetActive(PhotonNetwork.player.IsMasterClient);
+
+        //spawnPlayer();
+        Debug.Log("Join ~Room!");
+    }
+    /*
 	public void spawnPlayer()
 	{
         //Debug.Log("<(￣︶￣)/ " + PhotonNetwork.playerList.Length);
         GameObject pl = PhotonNetwork.Instantiate(playerPref.name, spawnPoint.position, spawnPoint.rotation, 0) as GameObject;
-        pl.GetComponent<Player>().enabled = true;
+        Player p1script = pl.GetComponent<Player>() as Player;
+        p1script.enabled = true;
+        FakerServer.Instance.AddPlayerlist(p1script);
         //Debug.Log("(‧‧)nnn~ (‧‧)nnn~ (‧‧)nnn~");
         Manager.Instance.PlayerJoin = true;
         CameraCtrl.Instance.target = pl.transform;
@@ -55,7 +88,7 @@ public class GameLobby : Photon.MonoBehaviour
 
 	void OnGUI()
 	{
-		if (isConnected)
+		if (MisConnected)
 		{
 			GUILayout.BeginArea(new Rect(Screen.width / 2 - 250, Screen.height / 2 - 250, 500, 500));
 			playerName = GUILayout.TextField(playerName);
@@ -76,5 +109,5 @@ public class GameLobby : Photon.MonoBehaviour
 			}
 			GUILayout.EndArea();
 		}
-	}
+	}*/
 }

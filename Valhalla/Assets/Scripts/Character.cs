@@ -53,8 +53,21 @@ public class Character : MonoBehaviour
 	}
 
     [PunRPC]
-    public void PunSetAni(string AniName, float Distance)
+    protected virtual void PunSetAni(string AniName, float Distance)
     {
         anim.SetFloat("Run", Distance);
     }
+
+    [PunRPC]
+    protected virtual void PunGetDamge(string AtkDamge, int Damge)
+    {
+
+    }
+
+    [PunRPC]
+    protected virtual void PunDie()
+    {
+
+    }
+
 }

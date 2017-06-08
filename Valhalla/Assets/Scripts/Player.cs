@@ -206,7 +206,7 @@ public class Player : Character
 				Vector3.down, out hit, float.MaxValue,
 				~LayerMask.GetMask("Player")))
 			{
-				Debug.Log(hit.distance.ToString());
+				//Debug.Log(hit.distance.ToString());
 				if (hit.distance > 1.0f)
 					anim.SetBool("Fall", true);
 				else
@@ -247,4 +247,18 @@ public class Player : Character
 				break;
 		}
 	}
+
+    // ------ OnTrigger -----
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Bullet")
+        {
+            Debug.Log("(￣ε(#￣)☆╰╮o(￣▽￣///) ");
+            if (phview.isMine)
+            {
+                PhotonNetwork.Destroy(this.gameObject);
+                Destroy(this.gameObject);
+            }
+        }
+    }
 }
