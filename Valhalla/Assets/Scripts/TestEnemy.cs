@@ -31,6 +31,7 @@ public class TestEnemy : Character
             Destroy(bul, 1.0f);
             //PhotonNetwork.Destroy(bul);
             //pv.RPC("playShoot", PhotonTargets.AllBuffered, null);
+			//
         }
     }
 }
