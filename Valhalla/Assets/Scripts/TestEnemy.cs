@@ -20,7 +20,7 @@ public class TestEnemy : Character
         else
             isShooot = true;
 
-        if (isShooot && Manager.Instance.PlayerJoin)
+        if (isShooot /*&& Manager.Instance.PlayerJoin*/)
         {
             shootTime = 120;
             isShooot = true;
