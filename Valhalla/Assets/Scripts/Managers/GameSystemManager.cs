@@ -4,11 +4,9 @@ using UnityEngine;
 
 namespace Valhalla
 {
-	/******************************************************
-	
-	系統管理器，建構子參數代入場景上一物件(GameObject)作為容器.
-
-	******************************************************/
+	/// <summary>
+	/// 系統管理器，建構子參數代入場景上一物件(GameObject)作為容器.
+	/// </summary>
 	public sealed class GameSystemManager
 	{
 		private GameObject container;
@@ -26,6 +24,14 @@ namespace Valhalla
 
 			SystemUpdateList = new List<IGameSystemUpdatable>();
 
+			IGameSystem[] systems = _container.GetComponents<IGameSystem>();
+
+			for(int i = 0; i < systems.Length; ++i)
+			{
+				SystemDictionary.Add(systems[i].GetType(), systems[i]);
+				systems[i].Initialize();
+			}
+
 			UnityEngine.Object.DontDestroyOnLoad(container);
 		}
 
@@ -37,7 +43,7 @@ namespace Valhalla
 			// 如果該子系統已經存在.
 			if(SystemDictionary.ContainsKey(typeof(T)))
 			{
-				EditorTools.Log("[ GetSystem ] 子系統 " + typeof(T).Name + " 已經存在.", LogType.Warning);
+				EditorTool.Log("[ GetSystem ] 子系統 " + typeof(T).Name + " 已經存在.", LogType.Warning);
 				return null;
 			}
 			else
@@ -97,7 +103,7 @@ namespace Valhalla
 			}
 			else
 			{
-				EditorTools.Log("[ GetSystem ] 子系統 " + typeof(T).Name + " 不存在.", LogType.Warning);
+				EditorTool.Log("[ GetSystem ] 子系統 " + typeof(T).Name + " 不存在.", LogType.Warning);
 				return null;
 			}
 		}

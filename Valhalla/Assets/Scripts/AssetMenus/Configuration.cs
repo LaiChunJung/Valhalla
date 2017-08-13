@@ -6,5 +6,5 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Config", menuName = "Valhalla/Settings")]
 public class Configuration : ScriptableObject
 {
-
+	public string PlayerPrefabPath;
 }

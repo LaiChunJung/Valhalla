@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Spider
-  m_Shader: {fileID: 4800000, guid: 6f03b2544865bf74fa7dbcf17ee0347e, type: 3}
+  m_Shader: {fileID: 4800000, guid: 8f0fbcab764cbe04cb026db4e2f7ad6e, type: 3}
   m_ShaderKeywords: _EMISSION _NORMALMAP
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
@@ -63,13 +63,13 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Ramp:
-        m_Texture: {fileID: 2800000, guid: 9086395cbc1831d48a7791ac88db2d57, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2cec66e65d9f1d84fbdb5a4f295cb7c0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Amount: 0
     - _BumpScale: 1
-    - _Cutoff: 0
+    - _Cutoff: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
@@ -79,10 +79,10 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _Outline: 0.0015
+    - _Outline: 0.0005
     - _Parallax: 0.02
-    - _RimPower: 0.5
-    - _Shininess: 0.8
+    - _RimPower: 6
+    - _Shininess: 0.15
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -91,12 +91,12 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 1}
     - _ColorAnimate: {r: 1, g: 1, b: 1, a: 1}
     - _DissColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _MainColor: {r: 1, g: 1, b: 1, a: 1}
-    - _OutlineColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _OutlineColor: {r: 0.8000001, g: 0.8000001, b: 0.8000001, a: 1}
     - _RimColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.6}
-    - _SColor: {r: 0.39705884, g: 0.39705884, b: 0.39705884, a: 1}
-    - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _SColor: {r: 0.7205882, g: 0.7205882, b: 0.7205882, a: 1}
+    - _SpecColor: {r: 0.88235295, g: 0.88235295, b: 0.88235295, a: 1}
