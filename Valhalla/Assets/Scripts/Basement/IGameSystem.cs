@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace Valhalla
 {
-	public interface IGameSystem
+	public interface ISystem
 	{
 		void Initialize();
 		void Release();
 	}
 
-	public interface IGameSystemUpdatable
+	public interface ISystemUpdatable
 	{
 		void SystemUpdate();
 	}

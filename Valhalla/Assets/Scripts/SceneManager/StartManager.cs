@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleCore : Singleton<BattleCore>
+namespace Valhalla
 {
-	
+	public class StartManager : IMonoSingleton<StartManager>
+	{
+
+	}
 }
