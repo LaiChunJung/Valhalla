@@ -4,9 +4,11 @@ using UnityEngine;
 
 namespace Valhalla
 {
-	public static class AssetPath
+	public class AssetPath
 	{
-		public const string PlayerAssetPath = "Prefabs/Players/Player";
+		public const string Character	= "Prefabs/Character/";
+		public const string UI			= "Prefabs/UI/";
+		public const string Effect		= "Prefabs/Effect/";
 	}
 }
 
