@@ -983,7 +983,7 @@ GameObject:
   - component: {fileID: 834459265}
   - component: {fileID: 834459266}
   m_Layer: 0
-  m_Name: BattleCore
+  m_Name: BattleManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

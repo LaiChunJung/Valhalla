@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerCamera : Singleton<PlayerCamera>
+public class PlayerCamera : MonoBehaviour
 {
 	private Transform target;
 	public float targetHeight = 1.0f;

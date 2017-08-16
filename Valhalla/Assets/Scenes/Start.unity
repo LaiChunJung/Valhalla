@@ -599,7 +599,7 @@ GameObject:
   - component: {fileID: 1552610049}
   - component: {fileID: 1552610048}
   m_Layer: 0
-  m_Name: StartCore
+  m_Name: StartManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -651,9 +651,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b42760011bf6b143a7f69e6a1dd0a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ClickObjectLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967241
+  ClickObjectLayerMask: {}
+  InputSwitch: 1
 --- !u!1 &1805210331
 GameObject:
   m_ObjectHideFlags: 0

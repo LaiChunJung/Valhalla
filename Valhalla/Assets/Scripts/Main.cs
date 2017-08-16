@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Valhalla
 {
-	[RequireComponent(typeof(Valhalla.InputSystem))]
+	[RequireComponent(typeof(InputSystem))]
 	public class Main : MonoBehaviour
 	{
 		

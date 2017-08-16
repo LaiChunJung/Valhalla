@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MovementEffects;
+using UnityEngine.SceneManagement;
 
 namespace Valhalla
 {
@@ -46,6 +48,19 @@ namespace Valhalla
 			}
 		}
 
+		public static void LoadStartLevel(string sceneName)
+		{
+#if UNITY_EDITOR
+			
+#endif
+		}
+
+		IEnumerator LoadLevel(string sceneName)
+		{
+			AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
+
+			yield return async;
+		}
 	}
 
 }
