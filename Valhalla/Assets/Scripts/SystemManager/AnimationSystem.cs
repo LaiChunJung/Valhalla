@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Valhalla
 {
-	public class AnimationSystem : ISingleton<AnimationSystem>, ISystem
+	public class AnimationSystem : ISystem
 	{
 
 

@@ -7,11 +7,13 @@ namespace Valhalla
 	/// <summary>
 	/// 系統管理器.
 	/// </summary>
-	public class GameSystemManager
+	public class GameSystemManager 
 	{
 		private GameObject Container;
 		private Dictionary<Type, ISystem> SystemDictionary;
 		private List<ISystemUpdatable> SystemUpdateList;
+
+		public GameSystemManager() { }
 
 		/// <summary>
 		/// 建構子，初始化管理器.
