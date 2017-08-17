@@ -271,7 +271,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1552610047}
   - component: {fileID: 1552610046}
-  - component: {fileID: 1552610049}
   - component: {fileID: 1552610048}
   m_Layer: 0
   m_Name: StartManager
@@ -313,17 +312,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2ad266e3e45169a429f2df75b3954e9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1552610049
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1552610045}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b42760011bf6b143a7f69e6a1dd0a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1805210331

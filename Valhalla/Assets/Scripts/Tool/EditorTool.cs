@@ -47,20 +47,6 @@ namespace Valhalla
 					break;
 			}
 		}
-
-		public static void LoadStartLevel(string sceneName)
-		{
-#if UNITY_EDITOR
-			
-#endif
-		}
-
-		IEnumerator LoadLevel(string sceneName)
-		{
-			AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
-
-			yield return async;
-		}
 	}
 
 }
