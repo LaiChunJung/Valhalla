@@ -11,17 +11,32 @@ namespace Valhalla
 		private Text teamLogoTxet;
 		private Text gameLogoText;
 
-		public LogoUI(): base() { }
+		public readonly float fadeDuration = 1.5f;
 
-		public override void Initialize()
+		public LogoUI(): base()
 		{
 			teamLogoTxet = GetChildUIComponent<Text>("Text_TeamLogo");
 			gameLogoText = GetChildUIComponent<Text>("Text_GameLogo");
 
-			if(teamLogoTxet && gameLogoText)
-				EditorTool.Log("LogoUI is initialized.", LogType.Normal);
-			else
-				EditorTool.Log("LogoUI is failed to initialize.", LogType.Warning);
+			EditorTool.Log("LogoUI is initialized.", LogType.Normal);
+		}
+
+		public override void Initialize()
+		{
+			teamLogoTxet.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+			teamLogoTxet.DOFade(1.0f, fadeDuration).OnComplete( () => 
+			{
+				teamLogoTxet.DOFade(0.0f, fadeDuration).OnComplete(() =>
+				{
+					gameLogoText.DOFade(1.0f, fadeDuration).OnComplete(() =>
+					{
+						gameLogoText.DOFade(0.0f, fadeDuration).OnComplete(()=> 
+						{
+
+						});
+					});
+				});
+			});
 		}
 
 		public override void Release() { }
