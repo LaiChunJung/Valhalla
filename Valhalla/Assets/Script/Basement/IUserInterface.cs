@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Valhalla
 {
@@ -27,6 +28,8 @@ namespace Valhalla
 		public virtual void Initialize() { }
 
 		public virtual void Release() { }
+
+		#region --- Get Function ---
 
 		/// <summary>
 		/// 取得UI最外層父物件.
@@ -67,9 +70,20 @@ namespace Valhalla
 			return component;
 		}
 
+		#endregion
+		
+		#region --- Set Function ---
+
+		public void Show (bool isFade = false)
+		{
+
+		}
+
 		public void SetUIVisible(string uiName, bool visible, bool isFade = false)
 		{
 
 		}
+
+		#endregion
 	}
 }
