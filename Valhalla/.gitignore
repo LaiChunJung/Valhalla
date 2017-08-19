@@ -19,10 +19,6 @@ obj/
 *.user
 *.unityproj
 *.booproj
-*.meta
-
-# need include the meta of file
-!*.*.meta
 
 # ============ #
 # OS generated #
