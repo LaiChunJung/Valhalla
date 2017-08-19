@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Valhalla
 {
-	public class IMonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
+	public abstract class IMonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 	{
 		private static T _instance = null;
 
@@ -50,7 +50,7 @@ namespace Valhalla
 		}
 	}
 
-	public class ISingleton<T> where T : class, new()
+	public abstract class ISingleton<T> where T : class, new()
 	{
 		private static bool applicationIsQuitting = false;
 

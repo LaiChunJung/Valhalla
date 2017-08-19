@@ -40,90 +40,26 @@ namespace Valhalla
 		{
 			if(!CurrentCanvas)
 			{
-				EditorTool.Log("[ FindUIObject ] CurrentCanvas is not initialized.", LogType.Warning);
+				EditorTool.Log("[ FindUIObject ] UITool.CurrentCanvas is not initialized.", LogType.Warning);
 				return null;
 			}
 
-			Transform result = null;
-
 			Transform[] children = CurrentCanvas.transform.GetComponentsInChildren<Transform>();
-
-			bool isFound = false;
-
+			bool isFinded = false;
 			for(int i = 0; i < children.Length; ++i)
 			{
 				if(children[i].name.Equals(objectName))
 				{
-					if (isFound)
+					if (isFinded)
 					{
 						EditorTool.Log("[ FindUIObject ] The UI object '" + objectName + "' is plural.", LogType.Warning);
 						continue;
 					}
-					result = children[i];
-					isFound = true;
+
+					isFinded = true;
 				}
 			}
-
-			if(!result)
-			{
-				EditorTool.Log("[ FindUIObject ] Can't find the ui object '" + objectName + "'.", LogType.Warning);
-				return null;
-			}
-
-			return result.gameObject;
-		}
-
-		/// <summary>
-		/// 取得UI子物件的Component.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		public static T GetChildUIComponent<T>(GameObject parent, string childName) where T : Object
-		{
-			GameObject childObj = GameTool.FindChildObject(parent, childName);
-
-			if (!childObj)
-				return null;
-
-			T component = childObj.GetComponent<T>();
-
-			if (!component)
-			{
-				EditorTool.Log("[ GetChildUIComponent ] " + childName + " is not " + typeof(T).Name + ".", LogType.Warning);
-				return null;
-			}
-
-			return component;
-		}
-
-		/// <summary>
-		/// 取得UI物件的Component.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="uiName"></param>
-		/// <returns></returns>
-		public static T GetUIComponent<T>(string uiName) where T : Object
-		{
-			if(!CurrentCanvas)
-			{
-				EditorTool.Log("[ GetUIComponent ] CurrentCanvas is null.", LogType.Warning);
-				return null;
-			}
-
-			GameObject childObj = GameTool.FindGameObject(uiName);
-
-			if (!childObj)
-				return null;
-
-			T component = childObj.GetComponent<T>();
-
-			if (!component)
-			{
-				EditorTool.Log("[ GetUIComponent ] " + uiName + " is not " + typeof(T).ToString() + ".", LogType.Warning);
-				return null;
-			}
-
-			return component;
+			return children[0].gameObject;
 		}
 	}
 }

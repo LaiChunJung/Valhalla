@@ -11,19 +11,13 @@ namespace Valhalla
 		private Text teamLogoTxet;
 		private Text gameLogoText;
 
-		public LogoUI(): base() { }
+		public LogoUI(GameObject root) : base(root) { }
 
 		public override void Initialize()
 		{
-			teamLogoTxet = GetChildUIComponent<Text>("Text_TeamLogo");
-			gameLogoText = GetChildUIComponent<Text>("Text_GameLogo");
+			base.Initialize();
 
-			if(teamLogoTxet && gameLogoText)
-				EditorTool.Log("LogoUI is initialized.", LogType.Normal);
-			else
-				EditorTool.Log("LogoUI is failed to initialize.", LogType.Warning);
+			UITool.BuildUICanvas("StartCanvas");
 		}
-
-		public override void Release() { }
 	}
 }
