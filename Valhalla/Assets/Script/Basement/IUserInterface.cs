@@ -5,27 +5,29 @@ using DG.Tweening;
 
 namespace Valhalla
 {
-	public class IUserInterface<T> : ISingleton<IUserInterface<T>>
+	public class IUserInterface<T> : ISystem
 	{
 		private GameObject m_Root;
 		private CanvasGroup m_CanvasGroup;
 
-		public IUserInterface() { }
+		public IUserInterface()
+		{
+			m_Root = UITool.FindUIObject(typeof(T).Name);
+		}
 
 		public IUserInterface (GameObject root)
 		{
 			m_Root = root;
 		}
-		
-		public virtual void Initialize()
+
+		public IUserInterface(string rootName)
 		{
-			
+			m_Root = UITool.FindUIObject(rootName);
 		}
 
-		public virtual void Release()
-		{
+		public virtual void Initialize() { }
 
-		}
+		public virtual void Release() { }
 
 		#region --- Get Function ---
 
@@ -38,9 +40,20 @@ namespace Valhalla
 			return m_Root;
 		}
 
+		/// <summary>
+		/// 取得最外層父物件身上的CanvasGroup.
+		/// </summary>
+		/// <returns></returns>
+		public CanvasGroup GetCanvasGroup()
+		{
+			if (m_CanvasGroup)
+				return m_CanvasGroup;
 
-<<<<<<< HEAD:Valhalla/Assets/Scripts/Basement/IUserInterface.cs
-=======
+			m_CanvasGroup = m_Root.GetComponent<CanvasGroup>();
+
+			if (m_CanvasGroup)
+				return m_CanvasGroup;
+
 			return null;
 		}
 
@@ -72,6 +85,5 @@ namespace Valhalla
 		}
 
 		#endregion
->>>>>>> 168a69dc7951d561880e7f5a42ab37854f084fbc:Valhalla/Assets/Script/Basement/IUserInterface.cs
 	}
 }

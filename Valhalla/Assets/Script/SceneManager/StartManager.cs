@@ -7,20 +7,34 @@ namespace Valhalla
 	public class StartManager : IMonoSingleton<StartManager>
 	{
 		GameSystemManager m_SystemManager;
-		LogoUI m_LogoUI;
 
 		private void Awake()
 		{
 			m_SystemManager = new GameSystemManager(gameObject);
 
-			UITool.BuildUICanvas("StartCanvas");
-
-			//m_LogoUI = new LogoUI(UITool.FindUIObject);
+			InitUI();
 		}
 
 		private void Start()
 		{
 			
+		}
+
+		private void OnDestroy()
+		{
+			m_SystemManager.RemoveAllSystem();
+		}
+
+		private void InitUI()
+		{
+			UITool.BuildUICanvas("StartCanvas");
+
+			m_SystemManager.AddSystem<LogoUI>();
+		}
+
+		private T GetSystem<T> () where T : class, ISystem
+		{
+			return m_SystemManager.GetSystem<T>();
 		}
 	}
 }
