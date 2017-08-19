@@ -9,15 +9,13 @@ namespace Valhalla
 	{
 		private GameObject m_Root;
 		private CanvasGroup m_CanvasGroup;
-		private bool enable = true;
-		private bool visible = true;
 
 		public IUserInterface()
 		{
 			m_Root = UITool.FindUIObject(typeof(T).Name);
 		}
 
-		public IUserInterface(GameObject root)
+		public IUserInterface (GameObject root)
 		{
 			m_Root = root;
 		}
@@ -73,62 +71,17 @@ namespace Valhalla
 		}
 
 		#endregion
-
+		
 		#region --- Set Function ---
 
-		/// <summary>
-		/// 顯示UI. (isFade判斷是否淡入淡出)
-		/// </summary>
-		/// <param name="duration"></param>
-		/// <param name="isFade"></param>
-		public void Show(float duration, bool isFade = false)
+		public void Show (bool isFade = false)
 		{
-			if (enable && !visible)
-			{
-				ShowSecure();
-				if (isFade && GetCanvasGroup())
-				{
-					m_CanvasGroup.alpha = 0.0f;
-					m_CanvasGroup.DOFade(1.0f, duration).OnComplete(ShowSecure);
-				}
-			}
+
 		}
 
-		/// <summary>
-		/// 隱藏UI. (isFade判斷是否淡入淡出)
-		/// </summary>
-		/// <param name="duration"></param>
-		/// <param name="isFade"></param>
-		public void Hide(float duration, bool isFade = false)
+		public void SetUIVisible(string uiName, bool visible, bool isFade = false)
 		{
-			if(enable && visible)
-			{
-				if (isFade && GetCanvasGroup())
-				{
-					m_CanvasGroup.alpha = 1.0f;
-					m_CanvasGroup.DOFade(0.0f, duration);
-				}
-				else
-					HideSecure();
-			}
-		}
 
-		private void ShowSecure()
-		{
-			if (enable)
-			{
-				visible = true;
-				m_Root.SetActive(true);
-			}
-		}
-
-		private void HideSecure()
-		{
-			if (enable)
-			{
-				visible = false;
-				m_Root.SetActive(false);
-			}
 		}
 
 		#endregion
