@@ -125,5 +125,15 @@ namespace Valhalla
 
 			return component;
 		}
+
+		public void SetLoadingUI(string uiName)
+		{
+			GameObject loadingUIObj = UITool.FindUIObject("LoadingUI");
+
+			if(!loadingUIObj)
+			{
+
+			}
+		}
 	}
 }

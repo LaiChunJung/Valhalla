@@ -1,40 +1,53 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using MovementEffects;
 
 namespace Valhalla
 {
 	public class StartManager : IMonoSingleton<StartManager>
 	{
-		GameSystemManager m_SystemManager;
-
 		private void Awake()
 		{
-			m_SystemManager = new GameSystemManager(gameObject);
+			// 初始化系統管理器.
+			SystemManager.Init();
 
+			// 初始化所有UI系統.
 			InitUI();
 		}
 
 		private void Start()
 		{
-			
+			// 播放Logo.
+			SystemManager.GetSystem<LogoUI>().StartLogo(() =>
+			{
+				// 切換場景.
+				ValhallaApp.LoadLevel("MainMenu");
+			});
+		}
+
+		private void Update()
+		{
+			SystemManager.UpdateSystem();
 		}
 
 		private void OnDestroy()
 		{
-			m_SystemManager.RemoveAllSystem();
+			ReleaseUI();
 		}
 
 		private void InitUI()
 		{
 			UITool.BuildUICanvas("StartCanvas");
 
-			m_SystemManager.AddSystem<LogoUI>();
+			SystemManager.AddSystem<LogoUI>();
 		}
 
-		private T GetSystem<T> () where T : class, ISystem
+		private void ReleaseUI()
 		{
-			return m_SystemManager.GetSystem<T>();
+			SystemManager.RemoveSystem<LogoUI>();
 		}
 	}
 }

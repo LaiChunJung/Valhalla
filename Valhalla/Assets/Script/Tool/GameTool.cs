@@ -57,5 +57,41 @@ namespace Valhalla
 
 			return result.gameObject;
 		}
+
+		/// <summary>
+		/// 設定特定物件的父物件.
+		/// </summary>
+		/// <param name="parent"></param>
+		/// <param name="child"></param>
+		/// <param name="isCenter"></param>
+		public static void SetParent(GameObject parent, GameObject child, bool isCenter)
+		{
+			child.transform.parent = parent.transform;
+
+			if (!isCenter)
+				return;
+
+			child.transform.localPosition = Vector3.zero;
+			child.transform.localRotation = Quaternion.identity;
+			child.transform.localScale = Vector3.one;
+		}
+
+		/// <summary>
+		/// 設定特定物件的父物件.
+		/// </summary>
+		/// <param name="parent"></param>
+		/// <param name="child"></param>
+		/// <param name="isCenter"></param>
+		public static void SetParent(Transform parent, Transform child, bool isCenter = true)
+		{
+			child.parent = parent;
+
+			if (!isCenter)
+				return;
+
+			child.localPosition = Vector3.zero;
+			child.localRotation = Quaternion.identity;
+			child.localScale = Vector3.one;
+		}
 	}
 }

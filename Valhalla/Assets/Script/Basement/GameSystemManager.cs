@@ -13,7 +13,7 @@ namespace Valhalla
 		private Dictionary<Type, ISystem> SystemDictionary;
 		private List<ISystemUpdatable> SystemUpdateList;
 
-		public GameSystemManager() { }
+		private GameSystemManager() { }
 
 		/// <summary>
 		/// 建構子，初始化管理器.
@@ -33,6 +33,8 @@ namespace Valhalla
 				SystemDictionary.Add(systems[i].GetType(), systems[i]);
 				systems[i].Initialize();
 			}
+
+			UnityEngine.Object.DontDestroyOnLoad(container);
 		}
 
 		/// <summary>
@@ -69,6 +71,34 @@ namespace Valhalla
 		}
 
 		/// <summary>
+		/// 取得子系統.
+		/// </summary>
+		public T GetSystem<T>() where T : class, ISystem
+		{
+			// 判斷該子系統是否存在.
+			if (SystemDictionary.ContainsKey(typeof(T)))
+			{
+				return SystemDictionary[typeof(T)] as T;
+			}
+			else
+			{
+				EditorTool.Log("[ GetSystem ] 子系統 " + typeof(T).Name + " 不存在.", LogType.Warning);
+				return null;
+			}
+		}
+
+		/// <summary>
+		/// 執行System身上的Update.
+		/// </summary>
+		public void SystemUpdate()
+		{
+			for (int i = 0; i < SystemUpdateList.Count; ++i)
+			{
+				SystemUpdateList[i].SystemUpdate();
+			}
+		}
+
+		/// <summary>
 		/// 移除子系統並執行子系統釋放.
 		/// </summary>
 		public void RemoveSystem<T>() where T : class, ISystem
@@ -88,23 +118,6 @@ namespace Valhalla
 
 				// 移除子系統.
 				SystemDictionary.Remove(typeof(T));
-			}
-		}
-
-		/// <summary>
-		/// 取得子系統.
-		/// </summary>
-		public T GetSystem<T>() where T : class, ISystem
-		{
-			// 判斷該子系統是否存在.
-			if (SystemDictionary.ContainsKey(typeof(T)))
-			{
-				return SystemDictionary[typeof(T)] as T;
-			}
-			else
-			{
-				EditorTool.Log("[ GetSystem ] 子系統 " + typeof(T).Name + " 不存在.", LogType.Warning);
-				return null;
 			}
 		}
 
