@@ -13,51 +13,55 @@ namespace Valhalla
 			m_SystemManager = new GameSystemManager(Instance.gameObject);
 		}
 
-		public static void AddSystem<T>() where T : class, ISystem, new()
+		public static void AddGameSystem<T>() where T : IGameSystem, new()
 		{
-			if (!Instance.ISInitialized())
+			if (!Instance.IsSystemManagerInit())
 				return;
 
-			m_SystemManager.AddSystem<T>();
+			m_SystemManager.AddGameSystem<T>();
 		}
 
-		public static T GetSystem<T> () where T : class, ISystem
+		public static T GetGameSystem<T> () where T : IGameSystem
 		{
-			if (!Instance.ISInitialized())
+			if (!Instance.IsSystemManagerInit())
 				return null;
 
-			return m_SystemManager.GetSystem<T>();
+			return m_SystemManager.GetGameSystem<T>();
 		}
 
-		public static void UpdateSystem()
+		public static void UpdateGameSystem()
 		{
-			if (!Instance.ISInitialized())
+			if (!Instance.IsSystemManagerInit())
 				return;
 
 			m_SystemManager.SystemUpdate();
 		}
 
-		public static void RemoveSystem<T> () where T : class, ISystem
+		public static void RemoveGameSystem<T> () where T : IGameSystem
 		{
-			if (!Instance.ISInitialized())
+			if (!Instance.IsSystemManagerInit())
 				return;
 
-			m_SystemManager.RemoveSystem<T>();
+			m_SystemManager.RemoveGameSystem<T>();
 		}
 
-		public static void RemoveAllSystem ()
+		public static void RemoveAllGameSystem()
 		{
-			if (!Instance.ISInitialized())
+			if (!Instance.IsSystemManagerInit())
 				return;
 
-			m_SystemManager.RemoveAllSystem();
+			m_SystemManager.RemoveAllGameSystem();
 		}
 
-		private bool ISInitialized()
+		/// <summary>
+		/// 檢查SystemManager是否已經初始化.
+		/// </summary>
+		/// <returns></returns>
+		private bool IsSystemManagerInit()
 		{
 			if (m_SystemManager == null)
 			{
-				EditorTool.Log("[ AddSystem ] SystemManager has not been initialized yet.", LogType.Warning);
+				EditorTool.Log("SystemManager has not been initialized yet.", LogType.Warning);
 				return false;
 			}
 

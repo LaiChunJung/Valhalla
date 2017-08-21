@@ -4,16 +4,16 @@ using UnityEngine;
 
 namespace Valhalla
 {
-	public class AnimationSystem : ISystem
+	public class AnimationSystem : IGameSystem
 	{
 
 
-		public  void Initialize()
+		public override void Initialize()
 		{
 
 		}
 
-		public void Release ()
+		public override void Release ()
 		{
 
 		}

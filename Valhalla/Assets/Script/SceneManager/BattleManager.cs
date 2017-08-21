@@ -12,13 +12,13 @@ namespace Valhalla
 		{
 			m_SystemManager = new GameSystemManager(gameObject);
 
-			m_SystemManager.AddSystem<InputSystem>();
-			m_SystemManager.AddSystem<AnimationSystem>();
+			m_SystemManager.AddGameSystem<InputSystem>();
+			m_SystemManager.AddGameSystem<AnimationSystem>();
 		}
 
 		private void OnDestroy()
 		{
-			m_SystemManager.RemoveAllSystem();
+			m_SystemManager.RemoveAllGameSystem();
 		}
 	}
 }

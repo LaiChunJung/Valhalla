@@ -21,16 +21,16 @@ namespace Valhalla
 		private void Start()
 		{
 			// 播放Logo.
-			SystemManager.GetSystem<LogoUI>().StartLogo(() =>
+			/*SystemManager.GetSystem<LogoUI>().StartLogo(() =>
 			{
 				// 切換場景.
 				ValhallaApp.LoadScene("MainMenu");
-			});
+			});*/
 		}
 
 		private void Update()
 		{
-			SystemManager.UpdateSystem();
+			SystemManager.UpdateGameSystem();
 		}
 
 		private void OnDestroy()
@@ -42,12 +42,12 @@ namespace Valhalla
 		{
 			UITool.BuildUICanvas("StartCanvas");
 
-			SystemManager.AddSystem<LogoUI>();
+			//SystemManager.AddSystem<LogoUI>();
 		}
 
 		private void ReleaseUI()
 		{
-			SystemManager.RemoveSystem<LogoUI>();
+			//SystemManager.RemoveSystem<LogoUI>();
 		}
 	}
 }

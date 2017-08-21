@@ -1,18 +1,19 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Valhalla
 {
-	public interface ISystem
+	public abstract class IGameSystem : ISystem
 	{
-		void Initialize();
-		void Release();
-	}
+		public virtual void Initialize()
+		{
 
-	public interface ISystemUpdatable
-	{
-		void SystemUpdate();
+		}
+
+		public virtual void Release()
+		{
+
+		}
 	}
 }
-

@@ -10,7 +10,7 @@ namespace Valhalla
 	public class GameSystemManager 
 	{
 		private GameObject Container;
-		private Dictionary<Type, ISystem> SystemDictionary;
+		private Dictionary<Type, IGameSystem> SystemDictionary;
 		private List<ISystemUpdatable> SystemUpdateList;
 
 		private GameSystemManager() { }
@@ -22,11 +22,11 @@ namespace Valhalla
 		{
 			Container = container;
 
-			SystemDictionary = new Dictionary<Type, ISystem>();
+			SystemDictionary = new Dictionary<Type, IGameSystem>();
 
 			SystemUpdateList = new List<ISystemUpdatable>();
 
-			ISystem[] systems = Container.GetComponents<ISystem>();
+			IGameSystem[] systems = Container.GetComponents<IGameSystem>();
 
 			for (int i = 0; i < systems.Length; ++i)
 			{
@@ -40,7 +40,7 @@ namespace Valhalla
 		/// <summary>
 		/// 新增子系統並執行子系統初始化.
 		/// </summary>
-		public T AddSystem<T>() where T : class, ISystem, new()
+		public T AddGameSystem<T>() where T : IGameSystem, new()
 		{
 			// 如果該子系統已經存在.
 			if (SystemDictionary.ContainsKey(typeof(T)))
@@ -73,7 +73,7 @@ namespace Valhalla
 		/// <summary>
 		/// 取得子系統.
 		/// </summary>
-		public T GetSystem<T>() where T : class, ISystem
+		public T GetGameSystem<T>() where T : IGameSystem
 		{
 			// 判斷該子系統是否存在.
 			if (SystemDictionary.ContainsKey(typeof(T)))
@@ -101,7 +101,7 @@ namespace Valhalla
 		/// <summary>
 		/// 移除子系統並執行子系統釋放.
 		/// </summary>
-		public void RemoveSystem<T>() where T : class, ISystem
+		public void RemoveGameSystem<T>() where T : IGameSystem
 		{
 			// 如果該子系統存在.
 			if (SystemDictionary.ContainsKey(typeof(T)))
@@ -124,9 +124,9 @@ namespace Valhalla
 		/// <summary>
 		/// 移除所有子系統.
 		/// </summary>
-		public void RemoveAllSystem()
+		public void RemoveAllGameSystem()
 		{
-			foreach (KeyValuePair<Type, ISystem> system in SystemDictionary)
+			foreach (KeyValuePair<Type, IGameSystem> system in SystemDictionary)
 			{
 				system.Value.Release();
 			}
