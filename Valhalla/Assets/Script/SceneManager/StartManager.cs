@@ -24,7 +24,7 @@ namespace Valhalla
 			SystemManager.GetSystem<LogoUI>().StartLogo(() =>
 			{
 				// 切換場景.
-				ValhallaApp.LoadLevel("MainMenu");
+				ValhallaApp.LoadScene("MainMenu");
 			});
 		}
 

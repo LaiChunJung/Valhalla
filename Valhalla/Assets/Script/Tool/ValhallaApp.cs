@@ -13,7 +13,7 @@ namespace Valhalla
 	{
 		private static Image loadingPorgressBar;
 
-		public static void LoadLevel(string levelName)
+		public static void LoadScene(string levelName)
 		{
 
 		}
