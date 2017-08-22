@@ -5,11 +5,12 @@ using UnityEngine;
 
 namespace Valhalla
 {
-	public class InputSystem : IGameSystem, ISystemUpdatable
+	//[DisallowMultipleComponent]
+	public class InputSystem : MonoBehaviour, ISystem, ISystemUpdatable
 	{
 		private bool InputSwitch = true;
 		
-		public override void Initialize()
+		public void Initialize()
 		{
 			
 		}
@@ -20,7 +21,7 @@ namespace Valhalla
 				return;
 		}
 
-		public override void Release ()
+		public void Release ()
 		{
 			InputSwitch = false;
 		}

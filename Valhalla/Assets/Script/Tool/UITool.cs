@@ -9,7 +9,7 @@ namespace Valhalla
 		public static GameObject CurrentCanvas;
 
 		/// <summary>
-		/// 建立UICanvas.
+		/// 建立UICanvas，參數代入Canvas的Prefab檔案名稱.
 		/// </summary>
 		/// <param name="canvasName"></param>
 		public static void BuildUICanvas (string canvasName)
