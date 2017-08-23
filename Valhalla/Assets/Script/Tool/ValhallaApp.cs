@@ -9,21 +9,33 @@ using MovementEffects;
 
 namespace Valhalla
 {
-	public static class ValhallaApp
+	public class ValhallaApp
 	{
-		private static Image loadingPorgressBar;
+		private static AsyncOperation loadSceneAsync;
 
 		public static void LoadScene(string levelName)
 		{
-
+			Timing.RunCoroutine(_LoadSceneCoroutine(levelName));
 		}
 
-		public static void RemoveComponent<Component>(this GameObject obj)
+		private static IEnumerator<float> _LoadSceneCoroutine(string sceneName)
 		{
-			Component component = obj.GetComponent<Component>();
-			if (component != null)
+			loadSceneAsync = SceneManager.LoadSceneAsync(sceneName);
+			loadSceneAsync.allowSceneActivation = false;
+
+			while (!loadSceneAsync.isDone)
 			{
-				UnityEngine.Object.Destroy(component as UnityEngine.Object);
+				//MainManager.GetSystem<LoadingUI>().Show();
+				MainManager.GetSystem<LoadingUI>().GetRootObject().SetActive(true);
+				MainManager.GetSystem<LoadingUI>().SetLoadingUIValue(loadSceneAsync.progress / 0.9f);
+
+				if(loadSceneAsync.progress >= 0.9f)
+				{
+					yield return Timing.WaitForSeconds(0.5f);
+					loadSceneAsync.allowSceneActivation = true;
+				}
+
+				yield return 0;
 			}
 		}
 	}

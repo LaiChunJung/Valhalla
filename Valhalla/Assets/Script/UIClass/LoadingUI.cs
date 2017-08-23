@@ -14,32 +14,25 @@ namespace Valhalla
 
 		public LoadingUI() : base()
 		{
-			Initialize();
+			
 		}
 
 		public override void Initialize()
 		{
-			loadingBar = UITool.GetChildUIComponent<Slider>(GetRootObject(), "ProgressBar");
-			progressText = UITool.GetChildUIComponent<Text>(GetRootObject(), "ProgressText");
-		}
-
-		private IEnumerator<float> _LoadLevelAsync(string levelName)
-		{
-			AsyncOperation async = SceneManager.LoadSceneAsync(levelName);
-
-			while (!async.isDone)
+			if (!m_Root)
 			{
-				EditorTool.Log(async.progress.ToString(), LogType.Normal);
-				float progress = Mathf.Clamp01(async.progress / 0.9f);
-				loadingBar.value = progress;
-				progressText.text = string.Format("{0}{1}", (progress * 100.0f).ToString(), "%");
-				yield return 0;
+				UITool.AddUIAsset("LoadingUI");
+				m_Root = UITool.FindUIObject("LoadingUI");
 			}
+
+			loadingBar = UITool.GetChildUIComponent<Slider>(m_Root, "ProgressBar");
+			progressText = UITool.GetChildUIComponent<Text>(m_Root, "ProgressText");
 		}
 
-		public void LoadLevel(string levelName)
+		public void SetLoadingUIValue(float progress)
 		{
-			Timing.RunCoroutine(_LoadLevelAsync(levelName));
+			loadingBar.value = progress;
+			progressText.text = string.Format("{0}{1}", (progress * 100.0f).ToString(), "%");
 		}
 	}
 }

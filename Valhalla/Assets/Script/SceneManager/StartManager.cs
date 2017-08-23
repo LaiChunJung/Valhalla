@@ -44,6 +44,7 @@ namespace Valhalla
 
 			// 新增UI系統.
 			MainManager.AddSystem<LogoUI>();
+			MainManager.AddSystem<LoadingUI>();
 		}
 
 		// 移除系統.
@@ -54,6 +55,7 @@ namespace Valhalla
 
 			// 移除UI系統.
 			MainManager.RemoveSystem<LogoUI>();
+			MainManager.RemoveSystem<LoadingUI>();
 		}
 	}
 }

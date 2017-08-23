@@ -46,7 +46,7 @@ namespace Valhalla
 
 			Transform result = null;
 
-			Transform[] children = CurrentCanvas.transform.GetComponentsInChildren<Transform>();
+			Transform[] children = CurrentCanvas.transform.GetComponentsInChildren<Transform>(true);
 
 			bool isFound = false;
 
@@ -126,14 +126,25 @@ namespace Valhalla
 			return component;
 		}
 
-		public void SetLoadingUI(string uiName)
+		/// <summary>
+		/// 新增UI資源至場景.
+		/// </summary>
+		/// <param name="uiName"></param>
+		public static void AddUIAsset(string uiName)
 		{
-			GameObject loadingUIObj = UITool.FindUIObject("LoadingUI");
-
-			if(!loadingUIObj)
+			/*if(FindUIObject(uiName))
 			{
+				EditorTool.Log("[ AddUIAsset ] The UI '" + uiName + "' already exists.", LogType.Warning);
+				return;
+			}*/
 
-			}
+			GameObject loadingUI = Object.Instantiate( Resources.Load<GameObject>(string.Format("{0}{1}", AssetPath.UI, uiName)) );
+
+			loadingUI.GetComponent<RectTransform>().SetParent(CurrentCanvas.GetComponent<RectTransform>(), false);
+
+			loadingUI.name = uiName;
+
+			EditorTool.Log("[ AddUIAsset ] Add UI asset '" + uiName + "'.", LogType.Normal);
 		}
 	}
 }

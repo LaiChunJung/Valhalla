@@ -7,8 +7,8 @@ namespace Valhalla
 {
 	public class IUserInterface<T> : ISystem
 	{
-		private GameObject m_Root;
-		private CanvasGroup m_CanvasGroup;
+		protected GameObject m_Root;
+		protected CanvasGroup m_CanvasGroup;
 
 		public IUserInterface()
 		{
@@ -76,7 +76,7 @@ namespace Valhalla
 
 		public void Show (bool isFade = false)
 		{
-
+			
 		}
 
 		public void SetUIVisible(string uiName, bool visible, bool isFade = false)
