@@ -5,6 +5,8 @@ namespace Valhalla
 {
 	public class IMonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 	{
+		private static bool isApplicationQuitting = false;
+
 		private static T _instance = null;
 
 		private static object _lock = new object();
@@ -13,7 +15,7 @@ namespace Valhalla
 		{
 			get
 			{
-				if (applicationIsQuitting)
+				if(isApplicationQuitting)
 				{
 					return null;
 				}
@@ -42,18 +44,14 @@ namespace Valhalla
 			}
 		}
 
-		private static bool applicationIsQuitting = false;
-
-		void OnDestroy()
+		private void OnDestroy()
 		{
-			applicationIsQuitting = true;
+			isApplicationQuitting = true;
 		}
 	}
 
 	public class ISingleton<T> where T : class, new()
 	{
-		private static bool applicationIsQuitting = false;
-
 		private static T _instance = null;
 
 		private static object _lock = new object();
@@ -62,11 +60,6 @@ namespace Valhalla
 		{
 			get
 			{
-				if (applicationIsQuitting)
-				{
-					return null;
-				}
-
 				lock (_lock)
 				{
 					if (_instance == null)
@@ -80,11 +73,6 @@ namespace Valhalla
 		}
 
 		public ISingleton() { }
-
-		~ISingleton()
-		{
-			applicationIsQuitting = true;
-		}
 	}
 }
 

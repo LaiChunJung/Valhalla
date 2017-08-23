@@ -81,12 +81,12 @@ namespace Valhalla
 		/// <summary>
 		/// 新增MonoBehaviour子系統並執行子系統初始化.
 		/// </summary>
-		public T AddMonoSystem<T> () where T : MonoBehaviour, ISystem
+		public T AddSystemMono<T> () where T : MonoBehaviour, ISystem
 		{
 			// 如果該子系統已經存在.
 			if (SystemDictionary.ContainsKey(typeof(T)))
 			{
-				EditorTool.Log("[ AddMonoSystem ] System '" + typeof(T).Name + "' already exists.", LogType.Warning);
+				EditorTool.Log("[ AddSystemMono ] System '" + typeof(T).Name + "' already exists.", LogType.Warning);
 				return null;
 			}
 			else
@@ -107,7 +107,7 @@ namespace Valhalla
 					SystemUpdateList.Add(system as ISystemUpdatable);
 				}
 
-				EditorTool.Log("[ AddMonoSystem ] Add system '" + typeof(T).Name + "'.", LogType.Normal);
+				EditorTool.Log("[ AddSystemMono ] Add system '" + typeof(T).Name + "'.", LogType.Normal);
 
 				return system;
 			}

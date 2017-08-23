@@ -14,11 +14,11 @@ namespace Valhalla
 			// 初始化系統管理器.
 			MainManager.Init();
 
-			// 初始化所有UI系統.
-			InitUI();
+			// 建立StartCanvas.
+			UITool.BuildUICanvas("StartCanvas");
 
-			// 初始化所有Game系統.
-			InitGameSystem();
+			// 初始化所有系統.
+			InitSystem();
 		}
 
 		private void Start()
@@ -36,39 +36,23 @@ namespace Valhalla
 			MainManager.SystemUpdate();
 		}
 
-		private void OnDestroy()
+		// 新增系統.
+		private void InitSystem()
 		{
-			ReleaseUI();
-			ReleaseSystem();
-		}
+			// 新增Game系統.
+			MainManager.AddSystemMono<InputSystem>();
 
-		// 初始化所有Game系統.
-		private void InitGameSystem()
-		{
-			MainManager.AddMonoSystem<InputSystem>();
-		}
-
-		// 初始化所有UI系統. (在Awake()執行)
-		private void InitUI()
-		{
-			// 建立StartCanvas.
-			UITool.BuildUICanvas("StartCanvas");
-
-			// 新增系統 - LogoUI.
+			// 新增UI系統.
 			MainManager.AddSystem<LogoUI>();
 		}
 
-		// 移除系統. (在OnDestroy()執行)
+		// 移除系統.
 		private void ReleaseSystem()
 		{
-			// 移除系統 - InputSystem.
+			// 移除Game系統.
 			MainManager.RemoveSystem<InputSystem>();
-		}
 
-		// 釋放所有UI系統. (在OnDestroy()執行)
-		private void ReleaseUI()
-		{
-			// 移除系統 - LogoUI.
+			// 移除UI系統.
 			MainManager.RemoveSystem<LogoUI>();
 		}
 	}

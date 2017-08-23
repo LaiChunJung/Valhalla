@@ -8,6 +8,11 @@ namespace Valhalla
 	{
 		private static SystemManager m_SystemManager;
 
+		private void OnApplicationQuit()
+		{
+			m_SystemManager.RemoveAllSystem();
+		}
+
 		public static void Init()
 		{
 			m_SystemManager = new SystemManager(Instance.gameObject);
@@ -21,12 +26,12 @@ namespace Valhalla
 			m_SystemManager.AddSystem<T>();
 		}
 
-		public static void AddMonoSystem<T>() where T : MonoBehaviour, ISystem
+		public static void AddSystemMono<T>() where T : MonoBehaviour, ISystem
 		{
 			if (!Instance.IsManagerInit())
 				return;
 
-			m_SystemManager.AddMonoSystem<T>();
+			m_SystemManager.AddSystemMono<T>();
 		}
 
 		public static T GetSystem<T> () where T : class, ISystem
