@@ -4,6 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using MovementEffects;
+using UnityEngine.SceneManagement;
+using UnityEngine.Events;
+
+/*--------------------------------
+ * 
+ * 起始畫面場景管理器.
+ *	-2017/8/26 by Mahua.
+ * 
+ * ------------------------------*/
 
 namespace Valhalla
 {
@@ -18,7 +27,9 @@ namespace Valhalla
 			UITool.BuildUICanvas("StartCanvas");
 
 			// 初始化所有系統.
-			InitSystem();
+			InitSystems();
+
+			SceneManager.sceneUnloaded += ReleaseSystems;
 		}
 
 		private void Start()
@@ -37,10 +48,10 @@ namespace Valhalla
 		}
 
 		// 新增系統.
-		private void InitSystem()
+		private void InitSystems()
 		{
 			// 新增Game系統.
-			MainManager.AddSystemMono<InputSystem>();
+			MainManager.AddSystem<InputSystem>();
 
 			// 新增UI系統.
 			MainManager.AddSystem<LogoUI>();
@@ -48,7 +59,7 @@ namespace Valhalla
 		}
 
 		// 移除系統.
-		private void ReleaseSystem()
+		private void ReleaseSystems(Scene scene)
 		{
 			// 移除Game系統.
 			MainManager.RemoveSystem<InputSystem>();

@@ -86,7 +86,7 @@ namespace Valhalla
 			// 如果該子系統已經存在.
 			if (SystemDictionary.ContainsKey(typeof(T)))
 			{
-				EditorTool.Log("[ AddSystemMono ] System '" + typeof(T).Name + "' already exists.", LogType.Warning);
+				EditorTool.Log("[ AddSystemMono ] Mono system '" + typeof(T).Name + "' already exists.", LogType.Warning);
 				return null;
 			}
 			else
@@ -107,7 +107,7 @@ namespace Valhalla
 					SystemUpdateList.Add(system as ISystemUpdatable);
 				}
 
-				EditorTool.Log("[ AddSystemMono ] Add system '" + typeof(T).Name + "'.", LogType.Normal);
+				EditorTool.Log("[ AddSystemMono ] Add mono system '" + typeof(T).Name + "'.", LogType.Normal);
 
 				return system;
 			}
@@ -182,7 +182,7 @@ namespace Valhalla
 				EditorTool.Log("[ RemoveAllSystem ] There is not any system can be removed.", LogType.Warning);
 				return;
 			}
-			
+
 			foreach (KeyValuePair<Type, ISystem> system in SystemDictionary)
 			{
 				if(system.Value is Component)
@@ -190,7 +190,7 @@ namespace Valhalla
 					UnityEngine.Object.Destroy((Component)system.Value);
 				}
 				system.Value.Release();
-
+				
 				EditorTool.Log("[ RemoveAllSystem ] Remove system '" + system.Value.GetType().Name + "'.", LogType.Normal);
 			}
 

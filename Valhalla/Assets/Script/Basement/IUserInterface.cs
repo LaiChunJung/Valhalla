@@ -10,6 +10,9 @@ namespace Valhalla
 		protected GameObject m_Root;
 		protected CanvasGroup m_CanvasGroup;
 
+		/// <summary>
+		/// 自動搜尋UI物件.
+		/// </summary>
 		public IUserInterface()
 		{
 			m_Root = UITool.FindUIObject(typeof(T).Name);

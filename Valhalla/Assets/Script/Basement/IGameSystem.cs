@@ -6,14 +6,10 @@ namespace Valhalla
 {
 	public abstract class IGameSystem : ISystem
 	{
-		public virtual void Initialize()
-		{
+		private bool enabled = false;
 
-		}
+		public virtual void Initialize() { }
 
-		public virtual void Release()
-		{
-
-		}
+		public virtual void Release() { }
 	}
 }

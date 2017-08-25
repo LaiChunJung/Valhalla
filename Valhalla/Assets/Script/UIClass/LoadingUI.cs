@@ -14,11 +14,6 @@ namespace Valhalla
 
 		public LoadingUI() : base()
 		{
-			
-		}
-
-		public override void Initialize()
-		{
 			if (!m_Root)
 			{
 				UITool.AddUIAsset("LoadingUI");
@@ -28,6 +23,10 @@ namespace Valhalla
 			loadingBar = UITool.GetChildUIComponent<Slider>(m_Root, "ProgressBar");
 			progressText = UITool.GetChildUIComponent<Text>(m_Root, "ProgressText");
 		}
+
+		public override void Initialize() { }
+
+		public override void Release() { }
 
 		public void SetLoadingUIValue(float progress)
 		{

@@ -18,14 +18,11 @@ namespace Valhalla
 
 		public LogoUI() : base()
 		{
-			Initialize();
-		}
-
-		public override void Initialize()
-		{
 			teamLogoTxet = GetChildUIComponent<Text>("Text_TeamLogo");
 			gameLogoText = GetChildUIComponent<Text>("Text_GameLogo");
 		}
+
+		public override void Initialize() { }
 
 		public override void Release() { }
 

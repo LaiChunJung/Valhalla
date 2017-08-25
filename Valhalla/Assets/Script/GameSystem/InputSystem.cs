@@ -5,12 +5,14 @@ using UnityEngine;
 
 namespace Valhalla
 {
-	//[DisallowMultipleComponent]
-	public class InputSystem : MonoBehaviour, ISystem, ISystemUpdatable
+	[DisallowMultipleComponent]
+	public class InputSystem : IGameSystem, ISystemUpdatable
 	{
+		private ICharacter MainCharacter;
+
 		private bool InputSwitch = true;
 		
-		public void Initialize()
+		public override void Initialize()
 		{
 			
 		}
@@ -19,9 +21,15 @@ namespace Valhalla
 		{
 			if (!InputSwitch)
 				return;
+
+			/*if(MainCharacter == null)
+			{
+				EditorTool.Log("[ InputSystem ][ SystemUpdate ] MainCharacter is null.", LogType.Warning);
+				return;
+			}*/
 		}
 
-		public void Release ()
+		public override void Release ()
 		{
 			InputSwitch = false;
 		}

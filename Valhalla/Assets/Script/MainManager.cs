@@ -15,7 +15,15 @@ namespace Valhalla
 
 		public static void Init()
 		{
+			if (m_SystemManager != null)
+			{
+				EditorTool.Log("SystemManager has been initialized. It can not be initilaized again.", LogType.Warning);
+				return;
+			}
+
 			m_SystemManager = new SystemManager(Instance.gameObject);
+
+			EditorTool.Log("SystemManager has been initialized.", LogType.Normal);
 		}
 
 		public static void AddSystem<T>() where T : class, ISystem, new()
