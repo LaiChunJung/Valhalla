@@ -20,7 +20,7 @@ namespace Valhalla
 
 			if (!prefab)
 			{
-				EditorTool.Log("[ BuildUICanvas ] Can't find the canvas prefab 'Resources/" + path + "'.", LogType.Warning);
+				Debug.Log("[ BuildUICanvas ] Can't find the canvas prefab 'Resources/" + path + "'.");
 				return;
 			}
 
@@ -40,7 +40,7 @@ namespace Valhalla
 		{
 			if(!CurrentCanvas)
 			{
-				EditorTool.Log("[ FindUIObject ] CurrentCanvas is not initialized.", LogType.Warning);
+				Debug.Log("[ FindUIObject ] CurrentCanvas is not initialized.");
 				return null;
 			}
 
@@ -56,7 +56,7 @@ namespace Valhalla
 				{
 					if (isFound)
 					{
-						EditorTool.Log("[ FindUIObject ] The UI object '" + objectName + "' is plural.", LogType.Warning);
+						Debug.Log("[ FindUIObject ] The UI object '" + objectName + "' is plural.");
 						continue;
 					}
 					result = children[i];
@@ -66,7 +66,7 @@ namespace Valhalla
 
 			if(!result)
 			{
-				EditorTool.Log("[ FindUIObject ] Can't find the ui object '" + objectName + "'.", LogType.Warning);
+				Debug.Log("[ FindUIObject ] Can't find the ui object '" + objectName + "'.");
 				return null;
 			}
 
@@ -89,7 +89,7 @@ namespace Valhalla
 
 			if (!component)
 			{
-				EditorTool.Log("[ GetChildUIComponent ] " + childName + " is not " + typeof(T).Name + ".", LogType.Warning);
+				Debug.LogWarning("[ GetChildUIComponent ] " + childName + " is not " + typeof(T).Name + ".");
 				return null;
 			}
 
@@ -106,7 +106,7 @@ namespace Valhalla
 		{
 			if(!CurrentCanvas)
 			{
-				EditorTool.Log("[ GetUIComponent ] CurrentCanvas is null.", LogType.Warning);
+				Debug.LogWarning("[ GetUIComponent ] CurrentCanvas is null.");
 				return null;
 			}
 
@@ -119,7 +119,7 @@ namespace Valhalla
 
 			if (!component)
 			{
-				EditorTool.Log("[ GetUIComponent ] " + uiName + " is not " + typeof(T).ToString() + ".", LogType.Warning);
+				Debug.LogWarning("[ GetUIComponent ] " + uiName + " is not " + typeof(T).ToString() + ".");
 				return null;
 			}
 
@@ -130,13 +130,13 @@ namespace Valhalla
 		/// 新增UI資源至場景.
 		/// </summary>
 		/// <param name="uiName"></param>
-		public static void AddUIAsset(string uiName)
+		public static void AddUIAsset(string uiName, bool isOnlyOne = true)
 		{
-			/*if(FindUIObject(uiName))
+			if(FindUIObject(uiName) && isOnlyOne)
 			{
-				EditorTool.Log("[ AddUIAsset ] The UI '" + uiName + "' already exists.", LogType.Warning);
+				Debug.LogWarning("[ AddUIAsset ] The UI '" + uiName + "' already exists.");
 				return;
-			}*/
+			}
 
 			GameObject loadingUI = Object.Instantiate( Resources.Load<GameObject>(string.Format("{0}{1}", AssetPath.UI, uiName)) );
 
@@ -144,7 +144,7 @@ namespace Valhalla
 
 			loadingUI.name = uiName;
 
-			EditorTool.Log("[ AddUIAsset ] Add UI asset '" + uiName + "'.", LogType.Normal);
+			Debug.Log("[ AddUIAsset ] Add UI asset '" + uiName + "'.");
 		}
 	}
 }

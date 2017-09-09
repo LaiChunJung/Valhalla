@@ -21,12 +21,6 @@ namespace Valhalla
 		{
 			if (!InputSwitch)
 				return;
-
-			/*if(MainCharacter == null)
-			{
-				EditorTool.Log("[ InputSystem ][ SystemUpdate ] MainCharacter is null.", LogType.Warning);
-				return;
-			}*/
 		}
 
 		public override void Release ()

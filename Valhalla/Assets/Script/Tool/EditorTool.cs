@@ -7,46 +7,41 @@ using UnityEngine.SceneManagement;
 namespace Valhalla
 {
 	/// <summary>
-	/// 訊息類型. (Normal - 一般訊息；Warning - 警告訊息；Error - 錯誤訊息)
+	/// 編譯器專用特化Debug.
 	/// </summary>
-	public enum LogType
-	{
-		Normal,
-		Warning,
-		Error
-	}
-
-	public class EditorTool
+	public class Debug
 	{
 		/// <summary>
-		/// 編譯器專用特化Log.
+		/// 印出訊息.
 		/// </summary>
-		public static void Log(string msg, LogType type)
+		/// <param name="msg"></param>
+		public static void Log(string msg)
 		{
-			switch(type)
-			{
-				case LogType.Normal:
 #if UNITY_EDITOR
-					Debug.Log(string.Format("{0}", msg));
-#endif
-					break;
-				case LogType.Warning:
+			UnityEngine.Debug.Log(string.Format("{0}", msg));
+#endif			
+		}
+
+		/// <summary>
+		/// 印出警告訊息.
+		/// </summary>
+		/// <param name="msg"></param>
+		public static void LogWarning(string msg)
+		{
 #if UNITY_EDITOR
-					Debug.LogWarning(string.Format("{0}", msg));
+			UnityEngine.Debug.LogWarning(string.Format("{0}", msg));
 #endif
-					break;
-				case LogType.Error:
+		}
+
+		/// <summary>
+		/// 印出錯誤訊息.
+		/// </summary>
+		/// <param name="msg"></param>
+		public static void LogError(string msg)
+		{
 #if UNITY_EDITOR
-					Debug.LogError(string.Format("{0}", msg));
+			UnityEngine.Debug.LogError(string.Format("{0}", msg));
 #endif
-					break;
-				default:
-#if UNITY_EDITOR
-					Debug.LogError("LogType " + type.ToString() + " is unknown.");
-#endif
-					break;
-			}
 		}
 	}
-
 }

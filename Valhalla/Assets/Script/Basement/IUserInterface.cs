@@ -11,18 +11,26 @@ namespace Valhalla
 		protected CanvasGroup m_CanvasGroup;
 
 		/// <summary>
-		/// 自動搜尋UI物件.
+		/// 自動搜尋UI物件. (以自身類別名稱進行搜尋)
 		/// </summary>
 		public IUserInterface()
 		{
 			m_Root = UITool.FindUIObject(typeof(T).Name);
 		}
 
+		/// <summary>
+		/// 代入指定UI物件.
+		/// </summary>
+		/// <param name="root"></param>
 		public IUserInterface (GameObject root)
 		{
 			m_Root = root;
 		}
 
+		/// <summary>
+		/// 代入欲搜尋的UI名稱.
+		/// </summary>
+		/// <param name="rootName"></param>
 		public IUserInterface(string rootName)
 		{
 			m_Root = UITool.FindUIObject(rootName);
@@ -32,8 +40,7 @@ namespace Valhalla
 
 		public virtual void Release() { }
 
-		#region --- Get Function ---
-
+		#region --- Get ---
 		/// <summary>
 		/// 取得UI最外層父物件.
 		/// </summary>
@@ -72,11 +79,9 @@ namespace Valhalla
 
 			return component;
 		}
-
 		#endregion
 		
-		#region --- Set Function ---
-
+		#region --- Set ---
 		public void Show (bool isFade = false)
 		{
 			
@@ -86,7 +91,6 @@ namespace Valhalla
 		{
 
 		}
-
 		#endregion
 	}
 }

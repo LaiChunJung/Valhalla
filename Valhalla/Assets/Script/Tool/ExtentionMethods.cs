@@ -20,33 +20,21 @@ namespace Valhalla
 		}
 
 		/// <summary>
-		/// 設定父物件.
+		/// 關閉Unity內建MonoBehaviour型別. (ex.Animator, CharacterController, ...)
 		/// </summary>
-		/// <param name="parent"></param>
-		/// <param name="child"></param>
-		/// <param name="isCenter"></param>
-		public static void SetParent(this Transform child, Transform parent, bool isCenter)
+		/// <typeparam name="T">Unity內建泛型型別.</typeparam>
+		/// <param name="enabled">開啟or關閉.</param>
+		public static void EnabledUnityBehaviour<T>(this ICharacter character, bool enabled) where T : Behaviour
 		{
-			child.parent = parent.transform;
+			T component = character.GetGameObject().GetComponent<T>();
 
-			if (!isCenter)
+			if (component)
+			{
+				component.enabled = enabled;
 				return;
+			}
 
-			child.localPosition = Vector3.zero;
-			child.localRotation = Quaternion.identity;
-			child.localScale = Vector3.one;
-		}
-
-		public static void SetUIParent(this RectTransform child, RectTransform parent, bool isCenter)
-		{
-			child.parent = parent;
-
-			if (!isCenter)
-				return;
-
-			child.anchoredPosition = Vector2.zero;
-			child.eulerAngles = Vector3.zero;
-			child.localScale = Vector3.one;
+			Debug.Log("[ SetUnityBehaviourEnabled ] Can't Find Component '" + component.name + "'.");
 		}
 	}
 }

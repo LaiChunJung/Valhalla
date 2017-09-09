@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 /*--------------------------------
  * 
@@ -14,32 +13,35 @@ namespace Valhalla
 {
 	public class MainMenuManager : IMonoSingleton<MainMenuManager>
 	{
-		
-
 		private void Awake()
 		{
 			// 初始化系統管理器.
-			MainManager.Init();
+			Core.Init();
 
+			// 建立UICanvas.
 			UITool.BuildUICanvas("MainMenuCanvas");
 
+			// 初始化系統.
 			InitSystems();
+		}
 
-			SceneManager.sceneUnloaded += ReleaseSystems;
+		private void OnDestroy()
+		{
+			ReleaseSystems();
 		}
 
 		private void InitSystems()
 		{
 			// 新增UI系統.
-			MainManager.AddSystem<LoadingUI>();
-			MainManager.AddSystem<OptionUI>();
+			Core.AddSystem<LoadingUI>();
+			Core.AddSystem<OptionUI>();
 		}
 
-		private void ReleaseSystems(Scene scene)
+		private void ReleaseSystems()
 		{
-			// 新增UI系統.
-			MainManager.RemoveSystem<LoadingUI>();
-			MainManager.RemoveSystem<OptionUI>();
+			// 釋放UI系統.
+			Core.RemoveSystem<LoadingUI>();
+			Core.RemoveSystem<OptionUI>();
 		}
 	}
 }

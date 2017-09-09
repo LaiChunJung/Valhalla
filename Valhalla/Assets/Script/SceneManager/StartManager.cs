@@ -21,21 +21,19 @@ namespace Valhalla
 		private void Awake()
 		{
 			// 初始化系統管理器.
-			MainManager.Init();
+			Core.Init();
 
 			// 建立StartCanvas.
 			UITool.BuildUICanvas("StartCanvas");
 
 			// 初始化所有系統.
 			InitSystems();
-
-			SceneManager.sceneUnloaded += ReleaseSystems;
 		}
 
 		private void Start()
 		{
 			// 播放Logo.
-			MainManager.GetSystem<LogoUI>().StartLogo(() =>
+			Core.GetSystem<LogoUI>().StartLogo(() =>
 			{
 				// 切換場景.
 				ValhallaApp.LoadScene("MainMenu");
@@ -44,29 +42,34 @@ namespace Valhalla
 
 		private void Update()
 		{
-			MainManager.SystemUpdate();
+			Core.SystemUpdate();
+		}
+
+		private void OnDestroy()
+		{
+			ReleaseSystems();
 		}
 
 		// 新增系統.
 		private void InitSystems()
 		{
 			// 新增Game系統.
-			MainManager.AddSystem<InputSystem>();
+			Core.AddSystem<InputSystem>();
 
 			// 新增UI系統.
-			MainManager.AddSystem<LogoUI>();
-			MainManager.AddSystem<LoadingUI>();
+			Core.AddSystem<LogoUI>();
+			Core.AddSystem<LoadingUI>();
 		}
 
 		// 移除系統.
-		private void ReleaseSystems(Scene scene)
+		private void ReleaseSystems()
 		{
 			// 移除Game系統.
-			MainManager.RemoveSystem<InputSystem>();
+			Core.RemoveSystem<InputSystem>();
 
 			// 移除UI系統.
-			MainManager.RemoveSystem<LogoUI>();
-			MainManager.RemoveSystem<LoadingUI>();
+			Core.RemoveSystem<LogoUI>();
+			Core.RemoveSystem<LoadingUI>();
 		}
 	}
 }

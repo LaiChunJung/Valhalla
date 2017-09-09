@@ -13,4 +13,10 @@ EditorBuildSettings:
     guid: 1af227356c1a18648b1e95af8add6b05
   - enabled: 1
     path: Assets/Scene/Battle.unity
+    guid: dd5a03832093d3d4998250fc1dd19c59
+  - enabled: 1
+    path: Assets/Scene/Test_1.unity
+    guid: f60e1a644c9636f439a3dc4ad5406f37
+  - enabled: 1
+    path: Assets/Scene/Test_2.unity
     guid: 00000000000000000000000000000000

@@ -7,22 +7,19 @@ namespace Valhalla
 	public abstract class ICharacter
 	{
 		protected GameObject CharacterObject;
-
-		private float Hp					= 0.0f;
-		protected const float RotSpeed		= 0.0f;
-
+		protected Transform trans;
+		protected Animator anim;
+		protected PhotonView phview;
+		protected CharacterController controller;
+		protected Collider[] Bones;
+		protected Rigidbody[] Rigs;
 		protected Vector3 MoveDirection = Vector3.zero;
 
-		protected bool movable = true;
-		protected bool hitable = true;
+		protected float Hp = 0.0f;
+		protected static readonly float RotSpeed = 0.0f;
 
-		protected Transform				Trans;
-		protected Animator				Anim;
-		protected PhotonView			Phview;
-		protected CharacterController	Controller;
-
-		protected Collider[]	Bones;
-		protected Rigidbody[]	Rigs;
+		protected bool isMovable = true;
+		protected bool isHitable = true;
 
 		// 存放角色各個動畫狀態的Dictionary;
 		private Dictionary<string, int> AnimStates = new Dictionary<string, int>();
@@ -30,23 +27,21 @@ namespace Valhalla
 		/// <summary>
 		/// 建立角色.
 		/// </summary>
-		/// <param name="asset"></param>
-		public ICharacter (string AssetPath)
+		/// <param name="assetPath">角色Prefab檔案路徑.</param>
+		public ICharacter (string assetPath)
 		{
-			CharacterObject = Object.Instantiate(Resources.Load<GameObject>(AssetPath));
+			CharacterObject = Object.Instantiate(Resources.Load<GameObject>(assetPath));
 
 			if(!CharacterObject)
 			{
-				EditorTool.Log("[ Iplayer ] Can't find the asset path '" + AssetPath + "'.", LogType.Error);
+				Debug.LogWarning("[ Iplayer ] Can't find the asset path '" + assetPath + "'.");
 				return;
 			}
 
-			Trans = CharacterObject.transform;
-			Anim = CharacterObject.GetComponent<Animator>();
-			Controller = CharacterObject.GetComponent<CharacterController>();
-			Phview = CharacterObject.GetComponent<PhotonView>();
-
-			Initialize();
+			trans = CharacterObject.transform;
+			anim = CharacterObject.GetComponent<Animator>();
+			controller = CharacterObject.GetComponent<CharacterController>();
+			phview = CharacterObject.GetComponent<PhotonView>();
 		}
 
 		/// <summary>
@@ -55,8 +50,6 @@ namespace Valhalla
 		public virtual void Initialize()
 		{
 
-
-			EditorTool.Log("Character Initialized.", LogType.Normal);
 		}
 
 		/// <summary>
@@ -65,6 +58,10 @@ namespace Valhalla
 		public virtual void Release()
 		{
 			CharacterObject = null;
+			trans = null;
+			anim = null;
+			controller = null;
+			phview = null;
 			Bones = null;
 			Rigs = null;
 			AnimStates.Clear();
@@ -73,7 +70,7 @@ namespace Valhalla
 		/// <summary>
 		/// 取得角色之遊戲物件.
 		/// </summary>
-		public GameObject GetGameObject ()
+		public GameObject GetGameObject()
 		{
 			return CharacterObject;
 		}
@@ -83,17 +80,17 @@ namespace Valhalla
 		/// </summary>
 		public Transform GetTransform()
 		{
-			return Trans;
+			return trans;
 		}
 
 		public CharacterController GetController()
 		{
-			return Controller;
+			return controller;
 		}
 
 		public Animator GetAnimator()
 		{
-			return Anim;
+			return anim;
 		}
 
 		/// <summary>
@@ -101,7 +98,7 @@ namespace Valhalla
 		/// </summary>
 		public AnimatorStateInfo GetCurrentStateInfo(int layer)
 		{
-			return Anim.GetCurrentAnimatorStateInfo(layer);
+			return anim.GetCurrentAnimatorStateInfo(layer);
 		}
 
 		/// <summary>
@@ -109,7 +106,7 @@ namespace Valhalla
 		/// </summary>
 		public void SetMovable(bool active)
 		{
-			movable = active;
+			isMovable = active;
 		}
 
 		/// <summary>
@@ -117,31 +114,7 @@ namespace Valhalla
 		/// </summary>
 		public bool IsMovable()
 		{
-			return movable;
-		}
-
-		/// <summary>
-		/// 關閉特定Unity內建的Behaviour組件.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="behaviour"></param>
-		/// <param name="active"></param>
-		public void EnabledUnityBehaviour<T>(T behaviour, bool enabled) where T : Behaviour
-		{
-			T component = CharacterObject.GetComponent<T>();
-
-			if(component)
-			{
-				component.enabled = enabled;
-				return;
-			}
-
-			EditorTool.Log("[ SetUnityBehaviourEnabled ] Can't Find Component '" + component.name + "'.", LogType.Warning);
-		}
-
-		public void AddAnimatorState(int value)
-		{
-			//AnimStates.Add();
+			return isMovable;
 		}
 	}
 }

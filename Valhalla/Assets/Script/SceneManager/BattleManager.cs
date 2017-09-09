@@ -15,7 +15,7 @@ namespace Valhalla
 	{
 		private void Awake()
 		{
-			MainManager.Init();
+			Core.Init();
 
 			UITool.BuildUICanvas("BattleCanvas");
 
@@ -24,24 +24,30 @@ namespace Valhalla
 
 		private void Update()
 		{
-			MainManager.SystemUpdate();
+			Core.SystemUpdate();
+		}
+
+		private void OnDestroy()
+		{
+			ReleaseSystem();
 		}
 
 		// 新增系統.
 		private void InitSystem()
 		{
-			MainManager.AddSystem<LoadingUI>();
+			Core.AddSystem<LoadingUI>();
 
-			MainManager.AddSystem<InputSystem>();
-			MainManager.AddSystem<AnimationSystem>();
+			Core.AddSystem<InputSystem>();
+			Core.AddSystem<AnimationSystem>();
 		}
 
+		// 釋放系統.
 		private void ReleaseSystem()
 		{
-			MainManager.RemoveSystem<LoadingUI>();
+			Core.RemoveSystem<LoadingUI>();
 
-			MainManager.RemoveSystem<InputSystem>();
-			MainManager.RemoveSystem<AnimationSystem>();
+			Core.RemoveSystem<InputSystem>();
+			Core.RemoveSystem<AnimationSystem>();
 		}
 	}
 }

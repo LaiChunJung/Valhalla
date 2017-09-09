@@ -25,9 +25,9 @@ namespace Valhalla
 
 			while (!loadSceneAsync.isDone)
 			{
-				//MainManager.GetSystem<LoadingUI>().Show();
-				MainManager.GetSystem<LoadingUI>().GetRootObject().SetActive(true);
-				MainManager.GetSystem<LoadingUI>().SetLoadingUIValue(loadSceneAsync.progress / 0.9f);
+				//Core.GetSystem<LoadingUI>().Show();
+				Core.GetSystem<LoadingUI>().GetRootObject().SetActive(true);
+				Core.GetSystem<LoadingUI>().SetLoadingUIValue(loadSceneAsync.progress / 0.9f);
 
 				if(loadSceneAsync.progress >= 0.9f)
 				{

@@ -16,7 +16,7 @@ namespace Valhalla
 	{
 		private Button buttonStart;
 
-		public OptionUI (): base ()
+		public OptionUI() : base()
 		{
 			buttonStart = UITool.GetChildUIComponent<Button>(m_Root, "Button Start");
 			buttonStart.onClick.AddListener(OnButtonStart);

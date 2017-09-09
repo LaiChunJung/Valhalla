@@ -5,20 +5,20 @@ using UnityEngine;
 namespace Valhalla
 {
 	/// <summary>
-	/// 系統管理器.
+	/// 系統核心.
 	/// </summary>
-	public sealed class SystemManager 
+	public sealed class SystemCore 
 	{
 		private GameObject Container;
 		private Dictionary<Type, ISystem> SystemDictionary;
 		private List<ISystemUpdatable> SystemUpdateList;
 
-		private SystemManager() { }
+		private SystemCore() { }
 
 		/// <summary>
 		/// 建構子，初始化管理器.
 		/// </summary>
-		public SystemManager(GameObject container)
+		public SystemCore(GameObject container)
 		{
 			Container = container;
 
@@ -31,7 +31,7 @@ namespace Valhalla
 			for (int i = 0; i < systems.Length; ++i)
 			{
 				SystemDictionary.Add(systems[i].GetType(), systems[i]);
-				EditorTool.Log("[ SystemManager ] System '" + systems[i].GetType().Name + "' is added.", LogType.Normal);
+				Debug.Log("[ SystemCore ] System '" + systems[i].GetType().Name + "' is added.");
 				systems[i].Initialize();
 
 				if (systems[i] is ISystemUpdatable)
@@ -39,8 +39,6 @@ namespace Valhalla
 					SystemUpdateList.Add(systems[i] as ISystemUpdatable);
 				}
 			}
-
-			UnityEngine.Object.DontDestroyOnLoad(container);
 		}
 
 		/// <summary>
@@ -51,7 +49,7 @@ namespace Valhalla
 			// 如果該子系統已經存在.
 			if (SystemDictionary.ContainsKey(typeof(T)))
 			{
-				EditorTool.Log("[ AddSystem ] System '" + typeof(T).Name + "' already exists.", LogType.Warning);
+				Debug.Log("[ AddSystem ] System '" + typeof(T).Name + "' already exists.");
 				return null;
 			}
 			else
@@ -72,7 +70,7 @@ namespace Valhalla
 					SystemUpdateList.Add(system as ISystemUpdatable);
 				}
 
-				EditorTool.Log("[ AddSystem ] Add system '" + typeof(T).Name + "'.", LogType.Normal);
+				Debug.Log("[ AddSystem ] Add system '" + typeof(T).Name + "'.");
 
 				return system;
 			}
@@ -86,7 +84,7 @@ namespace Valhalla
 			// 如果該子系統已經存在.
 			if (SystemDictionary.ContainsKey(typeof(T)))
 			{
-				EditorTool.Log("[ AddSystemMono ] Mono system '" + typeof(T).Name + "' already exists.", LogType.Warning);
+				Debug.Log("[ AddSystemMono ] Mono system '" + typeof(T).Name + "' already exists.");
 				return null;
 			}
 			else
@@ -107,7 +105,7 @@ namespace Valhalla
 					SystemUpdateList.Add(system as ISystemUpdatable);
 				}
 
-				EditorTool.Log("[ AddSystemMono ] Add mono system '" + typeof(T).Name + "'.", LogType.Normal);
+				Debug.Log("[ AddSystemMono ] Add mono system '" + typeof(T).Name + "'.");
 
 				return system;
 			}
@@ -124,7 +122,7 @@ namespace Valhalla
 				return SystemDictionary[typeof(T)] as T;
 			}
 
-			EditorTool.Log("[ GetSystem ] System '" + typeof(T).Name + "' does not exist.", LogType.Warning);
+			Debug.Log("[ GetSystem ] System '" + typeof(T).Name + "' does not exist.");
 			return null;
 		}
 
@@ -166,10 +164,10 @@ namespace Valhalla
 				// 移除子系統.
 				SystemDictionary.Remove(typeof(T));
 
-				EditorTool.Log("[ RemoveSystem ] Remove system '" + typeof(T).Name + "'.", LogType.Normal);
+				Debug.Log("[ RemoveSystem ] Remove system '" + typeof(T).Name + "'.");
 			}
 			else
-				EditorTool.Log("[ RemoveSystem ] System '" + typeof(T).Name + "' does not exist.", LogType.Warning);
+				Debug.Log("[ RemoveSystem ] System '" + typeof(T).Name + "' does not exist.");
 		}
 
 		/// <summary>
@@ -179,7 +177,7 @@ namespace Valhalla
 		{
 			if (SystemDictionary.Count == 0)
 			{
-				EditorTool.Log("[ RemoveAllSystem ] There is not any system can be removed.", LogType.Warning);
+				Debug.Log("[ RemoveAllSystem ] There is not any system can be removed.");
 				return;
 			}
 
@@ -191,7 +189,7 @@ namespace Valhalla
 				}
 				system.Value.Release();
 				
-				EditorTool.Log("[ RemoveAllSystem ] Remove system '" + system.Value.GetType().Name + "'.", LogType.Normal);
+				Debug.Log("[ RemoveAllSystem ] Remove system '" + system.Value.GetType().Name + "'.");
 			}
 
 			SystemDictionary.Clear();

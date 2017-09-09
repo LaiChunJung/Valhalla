@@ -12,7 +12,7 @@ namespace Valhalla
 		void Initialize();
 
 		/// <summary>
-		/// Release會在呼叫MainManager.RomoveSystem<T>()時執行.
+		/// Release會在呼叫Core.RomoveSystem<T>()時執行.
 		/// </summary>
 		void Release();
 	}
@@ -20,7 +20,7 @@ namespace Valhalla
 	public interface ISystemUpdatable
 	{
 		/// <summary>
-		/// SystemUpdate會在呼叫MainManager.SystemUpdate()時執行.
+		/// SystemUpdate會在呼叫Core.SystemUpdate()時執行.
 		/// </summary>
 		void SystemUpdate();
 	}
