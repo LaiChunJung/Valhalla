@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Valhalla
 {
+	/// <summary>
+	/// 角色基底虛擬類別.
+	/// </summary>
 	public abstract class ICharacter
 	{
 		protected GameObject CharacterObject;
