@@ -14,7 +14,7 @@ namespace Valhalla
 		/// <param name="canvasName"></param>
 		public static void BuildUICanvas (string canvasName)
 		{
-			string path = string.Format("{0}{1}", AssetPath.UI, canvasName);
+			string path = string.Format("{0}{1}{2}", AssetPath.UI, "/", canvasName);
 
 			GameObject prefab = Resources.Load<GameObject>(path);
 
@@ -138,7 +138,7 @@ namespace Valhalla
 				return;
 			}
 
-			GameObject loadingUI = Object.Instantiate( Resources.Load<GameObject>(string.Format("{0}{1}", AssetPath.UI, uiName)) );
+			GameObject loadingUI = Object.Instantiate( Resources.Load<GameObject>(string.Format("{0}{1}{2}", AssetPath.UI, "/", uiName)) );
 
 			loadingUI.GetComponent<RectTransform>().SetParent(CurrentCanvas.GetComponent<RectTransform>(), false);
 

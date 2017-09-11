@@ -1185,9 +1185,9 @@ GameObject:
   - component: {fileID: 143734741696093702}
   - component: {fileID: 54905210248545122}
   m_Layer: 8
-  m_Name: Player
+  m_Name: Magi
   m_TagString: Player
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

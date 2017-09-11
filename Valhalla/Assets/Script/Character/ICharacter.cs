@@ -9,6 +9,7 @@ namespace Valhalla
 	/// </summary>
 	public abstract class ICharacter
 	{
+		private int battleID;
 		protected GameObject CharacterObject;
 		protected Transform trans;
 		protected Animator anim;

@@ -39,6 +39,8 @@ namespace Valhalla
 
 			Core.AddSystem<InputSystem>();
 			Core.AddSystem<AnimationSystem>();
+			Core.AddSystem<CharacterSystem>();
+			Core.AddSystem<CameraSystem>();
 		}
 
 		// 釋放系統.
@@ -48,6 +50,8 @@ namespace Valhalla
 
 			Core.RemoveSystem<InputSystem>();
 			Core.RemoveSystem<AnimationSystem>();
+			Core.RemoveSystem<CharacterSystem>();
+			Core.RemoveSystem<CameraSystem>();
 		}
 	}
 }

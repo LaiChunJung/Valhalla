@@ -15,7 +15,7 @@ namespace Valhalla
 		/// 印出訊息.
 		/// </summary>
 		/// <param name="msg"></param>
-		public static void Log(string msg)
+		public static void Log(params string[] msg)
 		{
 #if UNITY_EDITOR
 			UnityEngine.Debug.Log(string.Format("{0}", msg));
@@ -26,7 +26,7 @@ namespace Valhalla
 		/// 印出警告訊息.
 		/// </summary>
 		/// <param name="msg"></param>
-		public static void LogWarning(string msg)
+		public static void LogWarning(params string[] msg)
 		{
 #if UNITY_EDITOR
 			UnityEngine.Debug.LogWarning(string.Format("{0}", msg));
@@ -37,7 +37,7 @@ namespace Valhalla
 		/// 印出錯誤訊息.
 		/// </summary>
 		/// <param name="msg"></param>
-		public static void LogError(string msg)
+		public static void LogError(params string[] msg)
 		{
 #if UNITY_EDITOR
 			UnityEngine.Debug.LogError(string.Format("{0}", msg));
