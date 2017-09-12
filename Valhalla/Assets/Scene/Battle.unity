@@ -2471,4 +2471,4 @@ MonoBehaviour:
   zoomRate: 40
   rotationDampening: 3
   zoomDampening: 10
-  sensitivity: 0.3
+  sensitivity: 0.5

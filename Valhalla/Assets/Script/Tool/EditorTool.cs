@@ -17,9 +17,9 @@ namespace Valhalla
 		/// <param name="msg"></param>
 		public static void Log(params string[] msg)
 		{
-#if UNITY_EDITOR
+			#if UNITY_EDITOR
 			UnityEngine.Debug.Log(string.Format("{0}", msg));
-#endif			
+			#endif			
 		}
 
 		/// <summary>
@@ -28,9 +28,9 @@ namespace Valhalla
 		/// <param name="msg"></param>
 		public static void LogWarning(params string[] msg)
 		{
-#if UNITY_EDITOR
+			#if UNITY_EDITOR
 			UnityEngine.Debug.LogWarning(string.Format("{0}", msg));
-#endif
+			#endif
 		}
 
 		/// <summary>
@@ -39,9 +39,9 @@ namespace Valhalla
 		/// <param name="msg"></param>
 		public static void LogError(params string[] msg)
 		{
-#if UNITY_EDITOR
+			#if UNITY_EDITOR
 			UnityEngine.Debug.LogError(string.Format("{0}", msg));
-#endif
+			#endif
 		}
 	}
 }

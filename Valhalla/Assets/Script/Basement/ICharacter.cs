@@ -10,7 +10,7 @@ namespace Valhalla
 	public abstract class ICharacter
 	{
 		private int battleID;
-		protected GameObject CharacterObject;
+		protected GameObject characterObject;
 		protected Transform trans;
 		protected Animator anim;
 		protected PhotonView phview;
@@ -29,31 +29,20 @@ namespace Valhalla
 		private Dictionary<string, int> AnimStates = new Dictionary<string, int>();
 
 		/// <summary>
-		/// 建立角色.
-		/// </summary>
-		/// <param name="assetPath">角色Prefab檔案路徑.</param>
-		public ICharacter (string assetPath)
-		{
-			CharacterObject = Object.Instantiate(Resources.Load<GameObject>(assetPath));
-
-			if(!CharacterObject)
-			{
-				Debug.LogWarning("[ Iplayer ] Can't find the asset path '" + assetPath + "'.");
-				return;
-			}
-
-			trans = CharacterObject.transform;
-			anim = CharacterObject.GetComponent<Animator>();
-			controller = CharacterObject.GetComponent<CharacterController>();
-			phview = CharacterObject.GetComponent<PhotonView>();
-		}
-
-		/// <summary>
 		/// 初始化角色資料.
 		/// </summary>
 		public virtual void Initialize()
 		{
+			if(!characterObject)
+			{
+				Debug.LogWarning("[ Character Initialize ] The character gameobject is null.");
+				return;
+			}
 
+			trans = characterObject.transform;
+			anim = characterObject.GetComponent<Animator>();
+			controller = characterObject.GetComponent<CharacterController>();
+			phview = characterObject.GetComponent<PhotonView>();
 		}
 
 		/// <summary>
@@ -61,7 +50,7 @@ namespace Valhalla
 		/// </summary>
 		public virtual void Release()
 		{
-			CharacterObject = null;
+			characterObject = null;
 			trans = null;
 			anim = null;
 			controller = null;
@@ -76,7 +65,7 @@ namespace Valhalla
 		/// </summary>
 		public GameObject GetGameObject()
 		{
-			return CharacterObject;
+			return characterObject;
 		}
 
 		/// <summary>
@@ -87,11 +76,19 @@ namespace Valhalla
 			return trans;
 		}
 
+		/// <summary>
+		/// 取得角色的CharacterController.
+		/// </summary>
+		/// <returns></returns>
 		public CharacterController GetController()
 		{
 			return controller;
 		}
 
+		/// <summary>
+		/// 取得角色的Animator.
+		/// </summary>
+		/// <returns></returns>
 		public Animator GetAnimator()
 		{
 			return anim;

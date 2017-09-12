@@ -14,10 +14,7 @@ namespace Valhalla
 		protected float Horizontal = 0.0f;
 		protected float Vertical = 0.0f;
 
-		public IPlayer (string AssetPath) : base(AssetPath)
-		{
-			
-		}
+		protected GameObject playerObject;
 
 		public override void Initialize()
 		{
@@ -27,19 +24,6 @@ namespace Valhalla
 		public override void Release()
 		{
 			base.Release();
-		}
-		
-		private void OnTriggerEnter(Collider other)
-		{
-			/*if (other.tag == "Bullet")
-			{
-				Debug.Log("(￣ε(#￣)☆╰╮o(￣▽￣///) ");
-				if (Phview.isMine)
-				{
-					PhotonNetwork.Destroy(this.gameObject);
-					Destroy(this.gameObject);
-				}
-			}*/
 		}
 	}
 

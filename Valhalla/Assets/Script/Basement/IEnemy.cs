@@ -7,7 +7,7 @@ namespace Valhalla
 {
 	public class IEnemy : ICharacter
 	{
-		public IEnemy (string AssetPath) : base (AssetPath)
+		public IEnemy (string AssetPath)
 		{
 
 		}
