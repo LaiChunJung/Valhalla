@@ -103,6 +103,15 @@ namespace Valhalla
 		}
 
 		/// <summary>
+		/// 取得角色當前方向.
+		/// </summary>
+		/// <returns></returns>
+		public Vector3 GetForward()
+		{
+			return trans.forward;
+		}
+
+		/// <summary>
 		/// 設定可否移動.
 		/// </summary>
 		public void SetMovable(bool active)
@@ -116,6 +125,21 @@ namespace Valhalla
 		public bool IsMovable()
 		{
 			return isMovable;
+		}
+
+		public void SetForward(Vector3 forward)
+		{
+			trans.forward = forward;
+		}
+
+		/// <summary>
+		/// 線性插值旋轉.
+		/// </summary>
+		/// <param name="forward">目標方向</param>
+		/// <param name="duration">旋轉時間</param>
+		public void LerForward(Vector3 forward, float duration)
+		{
+			trans.forward = Vector3.Lerp(trans.forward, forward, duration);
 		}
 	}
 }

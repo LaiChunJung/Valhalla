@@ -26,6 +26,13 @@ namespace Valhalla
 				return Input.GetAxis(vertical);
 			}
 		}
+		private Vector3 MoveDirection
+		{
+			get
+			{
+				return new Vector3(Input_Horizontal, 0.0f, Input_Vertical);
+			}
+		}
 
 
 		public PlayerController() { }
@@ -51,6 +58,8 @@ namespace Valhalla
 				Debug.LogWarning("要控制的角色不存在.");
 				return;
 			}
+
+			player.LerForward(MoveDirection, 0.3f);
 		}
 
 		/// <summary>
