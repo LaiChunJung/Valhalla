@@ -21,12 +21,37 @@ namespace Valhalla
 		public float sensitivity = 0.5f;
 
 		private Transform target;
+		private Transform trans;
 		private float x = 0.0f;
 		private float y = 0.0f;
 		private float currentDistance;
 		private float desiredDistance;
 		private float correctedDistance;
-		private Transform trans;
+		private float MouseX
+		{
+			get
+			{
+				return PlayerController.Instance.Input_MouseX;
+			}
+
+			set { }
+		}
+		private float MouseY
+		{
+			get
+			{
+				return PlayerController.Instance.Input_MouseY;
+			}
+			set { }
+		}
+		private float MouseScrollWheel
+		{
+			get
+			{
+				return PlayerController.Instance.Input_MouseScrollWheel;
+			}
+			set { }
+		}
 
 		private void Awake()
 		{
@@ -50,12 +75,6 @@ namespace Valhalla
 		{
 			Active();
 		}
-
-		public void OnHideCursor()
-		{
-			Cursor.visible = false;
-			Cursor.lockState = CursorLockMode.Locked;
-		}
 		
 		public void Active()
 		{
@@ -65,21 +84,18 @@ namespace Valhalla
 			if(!target)
 				return;
 
-			x += Input.GetAxis("Valhalla Mouse X") * xSpeed * Time.fixedDeltaTime;
-			y -= Input.GetAxis("Valhalla Mouse Y") * ySpeed * Time.fixedDeltaTime;
+			x += MouseX * xSpeed * Time.fixedDeltaTime;
+			y -= MouseY * ySpeed * Time.fixedDeltaTime;
 
-			x = ClampAngle(x, -360.0f, 360f);
-			y = ClampAngle(y, yMinLimit, yMaxLimit);
-
-			//x = Mathf.Clamp(x, -360.0f, 360.0f);
-			//y = Mathf.Clamp(y, yMinLimit, yMaxLimit);
+			x = Math.ClampAngle(x, -360.0f, 360f);
+			y = Math.ClampAngle(y, yMinLimit, yMaxLimit);
 
 			// set camera rotation
 			Quaternion rotation = Quaternion.Euler(y, x, 0);
 
 			// calculate the desired distance
 			desiredDistance -=
-				Input.GetAxis("Valhalla Mouse ScrollWheel") * Time.fixedDeltaTime * zoomRate * Mathf.Abs(desiredDistance);
+				MouseScrollWheel * Time.fixedDeltaTime * zoomRate * Mathf.Abs(desiredDistance);
 			desiredDistance = Mathf.Clamp(desiredDistance, minDistance, maxDistance);
 			correctedDistance = Mathf.Lerp(correctedDistance, desiredDistance, sensitivity);
 
@@ -114,18 +130,31 @@ namespace Valhalla
 			trans.position = Vector3.Lerp(trans.position, position, sensitivity);
 		}
 
-		private static float ClampAngle(float angle, float min, float max)
-		{
-			if (angle < -360)
-				angle += 360;
-			if (angle > 360)
-				angle -= 360;
-			return Mathf.Clamp(angle, min, max);
-		}
-
+		/// <summary>
+		/// 設定攝影機目標.
+		/// </summary>
+		/// <param name="_target"></param>
 		public void SetTarget(Transform _target)
 		{
 			target = _target;
+		}
+
+		/// <summary>
+		/// 取得Transform.
+		/// </summary>
+		/// <returns></returns>
+		public Transform GetTransform()
+		{
+			return trans;
+		}
+
+		/// <summary>
+		/// 取得攝影機水平方向.
+		/// </summary>
+		/// <returns></returns>
+		public Vector3 GetHorizontalForward()
+		{
+			return new Vector3(trans.forward.x, 0.0f, trans.forward.z);
 		}
 	}
 }

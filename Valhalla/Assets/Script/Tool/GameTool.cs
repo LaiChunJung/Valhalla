@@ -48,7 +48,7 @@ namespace Valhalla
 				{
 					if (isFound)
 					{
-						Debug.LogWarning("[ FindChildObject ] The child object '" + childName + "' in " + parent.name + " is plural.");
+						Debug.LogWarning("[ FindChildObject ] The child object '" + childName + "' in " + parent.name + " is not only one.");
 					}
 					result = children[i];
 					isFound = true;

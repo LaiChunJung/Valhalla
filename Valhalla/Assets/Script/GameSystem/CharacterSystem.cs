@@ -6,21 +6,23 @@ using System.Collections.Generic;
 namespace Valhalla
 {
 	public class CharacterSystem : ISystem, ISystemUpdatable
-	{
-		public Vector3 StartPosition					// 角色初始位置.
+	{		
+		private ICharacter player;						// 主要角色.
+		private PlayerController playerCtrl;            // 角色控制器.
+		private Dictionary<int, ICharacter> playerDic;  // 存放所有角色參考的Dictionary.
+
+		public CharacterSystem()
+		{
+			playerDic = new Dictionary<int, ICharacter>();
+		}
+
+		public Vector3 StartPosition                    // 角色初始位置
 		{
 			get
 			{
 				GameObject temp;
 
-				temp = GameObject.Find("Start Position");
-
-				if(!temp)
-				{
-					Debug.LogWarning("[ StartPosition ] Can't find the gameobject 'StartPosition'.");
-
-					return Vector3.zero;
-				}
+				temp = GameTool.FindGameObject("Start Position");
 
 				return GameObject.Find("Start Position").transform.position;
 			}
@@ -28,15 +30,9 @@ namespace Valhalla
 			private set { }
 		}
 
-		private ICharacter player;						// 主要角色.
-		private PlayerController playerCtrl;			// 角色控制器.
-
-
-		public CharacterSystem() { }
-
 		public void Initialize()
 		{
-			player = new Magi(StartPosition, Quaternion.identity);
+			player = CreateCharacter(new Magi(StartPosition, Quaternion.identity));
 
 			playerCtrl = new PlayerController(player);
 
@@ -46,11 +42,12 @@ namespace Valhalla
 
 		public void SystemUpdate()
 		{
-			playerCtrl.InputCtrl();
+			playerCtrl.InputUpdate();
 		}
 
 		public void Release()
 		{
+			playerDic.Clear();
 			player = null;
 			playerCtrl = null;
 		}
@@ -64,6 +61,8 @@ namespace Valhalla
 		/// <returns></returns>
 		public ICharacter CreateCharacter(ICharacter character)
 		{
+			playerDic.Add(character.GetGameObject().GetInstanceID(), character);
+
 			return character;
 		}
 	}

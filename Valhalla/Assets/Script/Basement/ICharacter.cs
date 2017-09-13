@@ -127,20 +127,48 @@ namespace Valhalla
 			return isMovable;
 		}
 
+		/// <summary>
+		/// 設定方向.
+		/// </summary>
+		/// <param name="forward">方向</param>
 		public void SetForward(Vector3 forward)
 		{
 			trans.forward = forward;
 		}
 
 		/// <summary>
-		/// 線性插值旋轉.
+		/// 線性插值轉向.
 		/// </summary>
 		/// <param name="forward">目標方向</param>
 		/// <param name="duration">旋轉時間</param>
-		public void LerForward(Vector3 forward, float duration)
+		public void LerpForward(Vector3 direction, float duration)
 		{
-			trans.forward = Vector3.Lerp(trans.forward, forward, duration);
+			direction = PlayerCamera.Instance.GetTransform().TransformDirection(direction);
+			
+			direction.y = 0.0f;
+
+			trans.forward = Vector3.Lerp(trans.forward, direction, duration);
 		}
+
+		/// <summary>
+		/// 建立角色.
+		/// </summary>
+		protected void Create(string assetFileName, Vector3 position, Quaternion rotation)
+		{
+			GameObject asset = Resources.Load<GameObject>(string.Format("{0}/{1}", AssetPath.Player, assetFileName));
+
+			if (!asset)
+			{
+				Debug.LogWarning();
+				return;
+			}
+
+			characterObject = Object.Instantiate(asset, position, rotation);
+
+			characterObject.name = assetFileName;
+		}
+
+		
 	}
 }
 
