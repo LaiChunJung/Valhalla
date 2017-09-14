@@ -20,6 +20,10 @@ obj/
 *.unityproj
 *.booproj
 *.ide
+*.meta
+
+# need include the meta of file
+!*.*.meta
 
 # ============ #
 # OS generated #
