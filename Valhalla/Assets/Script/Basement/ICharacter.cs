@@ -25,15 +25,27 @@ namespace Valhalla
 		protected bool isMovable = true;
 		protected bool isHitable = true;
 
+		protected string assetFullPath = "";
+
 		// 存放角色各個動畫狀態的Dictionary;
 		private Dictionary<string, int> AnimStates = new Dictionary<string, int>();
 
 		/// <summary>
 		/// 初始化角色資料.
 		/// </summary>
-		public virtual void Initialize()
+		protected virtual void Init(Vector3 position, Quaternion rotation)
 		{
-			if(!characterObject)
+			GameObject asset = Resources.Load<GameObject>(assetFullPath);
+
+			if (!asset)
+			{
+				Debug.LogWarning();
+				return;
+			}
+
+			characterObject = Object.Instantiate(asset, position, rotation);
+
+			if (!characterObject)
 			{
 				Debug.LogWarning("[ Character Initialize ] The character gameobject is null.");
 				return;
@@ -149,26 +161,6 @@ namespace Valhalla
 
 			trans.forward = Vector3.Lerp(trans.forward, direction, duration);
 		}
-
-		/// <summary>
-		/// 建立角色.
-		/// </summary>
-		protected void Create(string assetFileName, Vector3 position, Quaternion rotation)
-		{
-			GameObject asset = Resources.Load<GameObject>(string.Format("{0}/{1}", AssetPath.Player, assetFileName));
-
-			if (!asset)
-			{
-				Debug.LogWarning();
-				return;
-			}
-
-			characterObject = Object.Instantiate(asset, position, rotation);
-
-			characterObject.name = assetFileName;
-		}
-
-		
 	}
 }
 

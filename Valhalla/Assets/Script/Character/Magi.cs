@@ -7,9 +7,8 @@ namespace Valhalla
 	{
 		public Magi(Vector3 position, Quaternion rotation)
 		{
-			Create("Magi", position, rotation);
-
-			Initialize();
+			assetFullPath = string.Format("{0}/{1}", AssetPath.Player, "Magi");
+			Init(position, rotation);
 		}
 	}
 }

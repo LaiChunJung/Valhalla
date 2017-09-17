@@ -5,51 +5,28 @@ using System.Collections.Generic;
 
 namespace Valhalla
 {
-	public class CharacterSystem : ISystem, ISystemUpdatable
-	{		
-		private ICharacter player;						// 主要角色.
-		private PlayerController playerCtrl;            // 角色控制器.
+	public class CharacterSystem : IGameSystem, ISystemUpdatable
+	{
+		private ICharacter player;
 		private Dictionary<int, ICharacter> playerDic;  // 存放所有角色參考的Dictionary.
+
 
 		public CharacterSystem()
 		{
 			playerDic = new Dictionary<int, ICharacter>();
 		}
 
-		public Vector3 StartPosition                    // 角色初始位置
+		public override void Initialize()
 		{
-			get
-			{
-				GameObject temp;
-
-				temp = GameTool.FindGameObject("Start Position");
-
-				return GameObject.Find("Start Position").transform.position;
-			}
-
-			private set { }
+			base.Initialize();
 		}
 
-		public void Initialize()
+		public void SystemUpdate() { }
+
+		public override void Release()
 		{
-			player = CreateCharacter(new Magi(StartPosition, Quaternion.identity));
-
-			playerCtrl = new PlayerController(player);
-
-			PlayerCamera.Instance.active = true;
-			PlayerCamera.Instance.SetTarget(player.GetTransform());
-		}
-
-		public void SystemUpdate()
-		{
-			playerCtrl.InputUpdate();
-		}
-
-		public void Release()
-		{
+			base.Release();
 			playerDic.Clear();
-			player = null;
-			playerCtrl = null;
 		}
 
 		/// <summary>
@@ -64,6 +41,16 @@ namespace Valhalla
 			playerDic.Add(character.GetGameObject().GetInstanceID(), character);
 
 			return character;
+		}
+
+		public void SetMyPlayer(ICharacter character)
+		{
+			player = character;
+		}
+
+		public ICharacter GetMyPlayer()
+		{
+			return player;
 		}
 	}
 }

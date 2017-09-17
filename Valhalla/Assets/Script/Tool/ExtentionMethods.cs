@@ -36,5 +36,37 @@ namespace Valhalla
 
 			Debug.Log("[ SetUnityBehaviourEnabled ] Can't Find Component '" + component.name + "'.");
 		}
+
+		/// <summary>
+		/// Animator.SetFloat連線版.
+		/// </summary>
+		/// <param name="anim"></param>
+		/// <param name="name"></param>
+		/// <param name="value"></param>
+		public static void SetFloat_RPC(this Animator anim, string name, float value)
+		{
+			anim.SetFloat(name, value);
+		}
+
+		/// <summary>
+		/// Animator.SetBool連線版.
+		/// </summary>
+		/// <param name="anim"></param>
+		/// <param name="name"></param>
+		/// <param name="value"></param>
+		public static void SetBool_RPC(this Animator anim, string name, bool value)
+		{
+			anim.SetBool(name, value);
+		}
+		
+		/// <summary>
+		/// Animator.SetTrigger連線版.
+		/// </summary>
+		/// <param name="anim"></param>
+		/// <param name="name"></param>
+		public static void SetTrigger_RPC(this Animator anim, string name)
+		{
+			anim.SetTrigger(name);
+		}
 	}
 }

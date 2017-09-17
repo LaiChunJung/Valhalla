@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace Valhalla
 {
-	public class CameraSystem : ISystem, ISystemUpdatable
+	public class CameraSystem : IGameSystem, ISystemUpdatable
 	{
 		private Camera main;
 
-		public void Initialize()
+		public override void Initialize()
 		{
-			
+			base.Initialize();
 		}
 		
 		public void SystemUpdate()
@@ -18,9 +18,9 @@ namespace Valhalla
 
 		}
 
-		public void Release()
+		public override void Release()
 		{
-
+			base.Release();
 		}
 
 		public void SetMain(Camera cam)

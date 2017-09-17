@@ -11,9 +11,9 @@ namespace Valhalla
 		private const int Dodge = 0;
 		private const int Fall = 0;
 
-		public override void Initialize()
+		protected override void Init(Vector3 position, Quaternion rotation)
 		{
-			base.Initialize();
+			base.Init(position, rotation);
 		}
 
 		public override void Release()
@@ -21,6 +21,5 @@ namespace Valhalla
 			base.Release();
 		}
 	}
-
 }
 

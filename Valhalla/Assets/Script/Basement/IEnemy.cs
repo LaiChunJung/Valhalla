@@ -7,14 +7,14 @@ namespace Valhalla
 {
 	public class IEnemy : ICharacter
 	{
-		public IEnemy (string AssetPath)
+		public IEnemy ()
 		{
 
 		}
 
-		public override void Initialize()
+		protected override void Init(Vector3 position, Quaternion rotation)
 		{
-			base.Initialize();
+			base.Init(position, rotation);
 		}
 
 		public override void Release()

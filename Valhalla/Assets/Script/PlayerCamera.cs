@@ -5,7 +5,6 @@ namespace Valhalla
 {
 	public class PlayerCamera : IMonoSingleton<PlayerCamera>
 	{
-		public bool active = false;
 		public float targetHeight = 1.0f;
 		public float maxDistance = 10.0f;
 		public float minDistance = 1.0f;
@@ -20,8 +19,9 @@ namespace Valhalla
 		[Range(0.0f, 1.0f)]
 		public float sensitivity = 0.5f;
 
-		private Transform target;
+		private ICharacter target;
 		private Transform trans;
+		private bool active = true;
 		private float x = 0.0f;
 		private float y = 0.0f;
 		private float currentDistance;
@@ -31,7 +31,7 @@ namespace Valhalla
 		{
 			get
 			{
-				return PlayerController.Instance.Input_MouseX;
+				return Core.GetSystem<PlayerController>().Input_MouseX;
 			}
 
 			set { }
@@ -40,7 +40,7 @@ namespace Valhalla
 		{
 			get
 			{
-				return PlayerController.Instance.Input_MouseY;
+				return Core.GetSystem<PlayerController>().Input_MouseY;
 			}
 			set { }
 		}
@@ -48,7 +48,7 @@ namespace Valhalla
 		{
 			get
 			{
-				return PlayerController.Instance.Input_MouseScrollWheel;
+				return Core.GetSystem<PlayerController>().Input_MouseScrollWheel;
 			}
 			set { }
 		}
@@ -56,9 +56,6 @@ namespace Valhalla
 		private void Awake()
 		{
 			trans = transform;
-			
-			if (!target)
-				Debug.LogWarning("Target is not accessed.");
 
 			Vector3 angles = trans.eulerAngles;
 			x = angles.y;
@@ -67,8 +64,6 @@ namespace Valhalla
 			currentDistance = distance;
 			desiredDistance = distance;
 			correctedDistance = distance - 0.2f;
-
-			Cursor.visible = false;
 		}
 
 		private void LateUpdate()
@@ -81,7 +76,7 @@ namespace Valhalla
 			if(!active)
 				return;
 
-			if(!target)
+			if(target == null)
 				return;
 
 			x += MouseX * xSpeed * Time.fixedDeltaTime;
@@ -101,18 +96,21 @@ namespace Valhalla
 
 			// calculate desired camera position
 			Vector3 position =
-				target.position - (rotation * Vector3.forward * desiredDistance + new Vector3(0, -targetHeight, 0));
+				target.GetTransform().position - (rotation * Vector3.forward * desiredDistance + new Vector3(0, -targetHeight, 0));
 
 			// check for collision using the true target's desired registration point as set by user using height
 			RaycastHit collisionHit;
 			Vector3 trueTargetPosition =
-				new Vector3(target.position.x, target.position.y + targetHeight, target.position.z);
+				new Vector3(
+					target.GetTransform().position.x, 
+					target.GetTransform().position.y + targetHeight, 
+					target.GetTransform().position.z);
 
 			// if there was a collision, correct the camera position and calculate the corrected distance
 			bool isCorrected = false;
 			if (Physics.Linecast(trueTargetPosition, position, out collisionHit, ~LayerMask.GetMask("Player")))
 			{
-				if (collisionHit.transform.name != target.name)
+				if (collisionHit.transform.name != target.GetGameObject().name)
 				{
 					position = collisionHit.point + collisionHit.normal.normalized / 2;
 					correctedDistance = Vector3.Distance(trueTargetPosition, position);
@@ -124,7 +122,7 @@ namespace Valhalla
 			currentDistance = !isCorrected || correctedDistance > currentDistance ? Mathf.Lerp(currentDistance, correctedDistance, Time.fixedDeltaTime * zoomDampening) : correctedDistance;
 
 			// recalculate position based on the new currentDistance
-			position = target.position - (rotation * Vector3.forward * currentDistance + new Vector3(0, -targetHeight - 0.05f, 0));
+			position = target.GetTransform().position - (rotation * Vector3.forward * currentDistance + new Vector3(0, -targetHeight - 0.05f, 0));
 
 			trans.rotation = Quaternion.Lerp(trans.rotation, rotation, sensitivity);
 			trans.position = Vector3.Lerp(trans.position, position, sensitivity);
@@ -134,9 +132,9 @@ namespace Valhalla
 		/// 設定攝影機目標.
 		/// </summary>
 		/// <param name="_target"></param>
-		public void SetTarget(Transform _target)
+		public void SetTarget(ICharacter character)
 		{
-			target = _target;
+			target = character;
 		}
 
 		/// <summary>

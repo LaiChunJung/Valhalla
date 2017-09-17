@@ -7,16 +7,17 @@ namespace Valhalla
 	/// <summary>
 	/// 角色控制器.
 	/// </summary>
-	public class PlayerController : ISingleton<PlayerController>
+	public class PlayerController : IGameSystem, ISystemUpdatable
 	{
 		private ICharacter player;
-		private const string horizontal = "Valhalla Horizontal";
-		private const string vertical = "Valhalla Vertical";
-		private const string mouseX = "Valhalla Mouse X";
-		private const string mouseY = "Valhalla Mouse Y";
-		private const string mouseScrollWheel = "Valhalla Mouse ScrollWheel";
-		private const string jump = "Valhalla Jump";
-		private const string dodge = "Valhalla Dodge";
+
+		public const string horizontal			= "Valhalla Horizontal";
+		public const string vertical			= "Valhalla Vertical";
+		public const string mouseX				= "Valhalla Mouse X";
+		public const string mouseY				= "Valhalla Mouse Y";
+		public const string mouseScrollWheel	= "Valhalla Mouse ScrollWheel";
+		public const string jump				= "Valhalla Jump";
+		public const string dodge				= "Valhalla Dodge";
 
 		#region ------ Properties ------
 		public float Input_Horizontal				// 鍵盤輸入前後方向 (W、S、↑、↓)
@@ -32,6 +33,14 @@ namespace Valhalla
 			get
 			{
 				return Input.GetAxis(vertical);
+			}
+			private set { }
+		}
+		public float RunValue                       // 角色跑步動畫條件值
+		{
+			get
+			{
+				return Mathf.Abs(Input_Horizontal) + Mathf.Abs(Input_Vertical);
 			}
 			private set { }
 		}
@@ -82,34 +91,23 @@ namespace Valhalla
 			}
 
 			private set { }
-		}				
-		public float RunValue						// 角色跑步動畫條件值
-		{
-			get
-			{
-				return Mathf.Abs(Input_Horizontal) + Mathf.Abs(Input_Vertical);
-			}
-			private set { }
 		}
 		#endregion
-		
-		public PlayerController() { }
 
-		public PlayerController(ICharacter character)
+		public override void Initialize()
 		{
-			if(character == null)
-			{
-				Debug.LogWarning("[ PlayerController ] The parameter 'player' is null.");
-				return;
-			}
+			base.Initialize();
+		}
 
-			player = character;
+		public override void Release()
+		{
+			base.Release();
 		}
 
 		/// <summary>
 		/// 玩家控制輸入監聽.
 		/// </summary>
-		public void InputUpdate()
+		public void SystemUpdate()
 		{
 			if(!CheckPlayerExists())
 			{
@@ -127,10 +125,10 @@ namespace Valhalla
 
 			if(Input_Jump)
 			{
-				player.GetAnimator().SetTrigger("Jump");
+				player.GetAnimator().SetTrigger_RPC("Jump");
 			}
 
-			player.GetAnimator().SetFloat("Run", RunValue);
+			player.GetAnimator().SetFloat_RPC("Run", RunValue);
 		}
 
 		/// <summary>

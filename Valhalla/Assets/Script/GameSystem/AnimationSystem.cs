@@ -10,12 +10,12 @@ namespace Valhalla
 
 		public override void Initialize()
 		{
-
+			base.Initialize();
 		}
 
 		public override void Release ()
 		{
-
+			base.Release();
 		}
 	}
 }
